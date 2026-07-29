@@ -1,15 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Home CCTV</title>
+
+<style>
+
+/* =========================
+   BASIC
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: white;
+
+  background:
+    #02060b;
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
+.background {
+  position: fixed;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  z-index: 0;
+
+  pointer-events: none;
+}
+
+
+/* BLUE GLOW */
+
+.blue-glow {
+  position: absolute;
+
+  width: 380px;
+  height: 380px;
+
+  left: -150px;
+  top: -120px;
+
+  border-radius: 50%;
+
+  background: #087cff;
+
+  filter: blur(110px);
+
+  opacity: .22;
+
+  animation:
+    blueMove 10s ease-in-out infinite alternate;
+}
+
+@keyframes blueMove {
+
+  0% {
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate(170px,150px)
+      scale(1.25);
+  }
+
+}
+
+
+/* PURPLE GLOW */
+
+.purple-glow {
+  position: absolute;
+
+  width: 380px;
+  height: 380px;
+
+  right: -150px;
+  bottom: -150px;
+
+  border-radius: 50%;
+
+  background: #762cff;
+
+  filter: blur(110px);
+
+  opacity: .18;
+
+  animation:
+    purpleMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes purpleMove {
+
+  0% {
+    transform:
+      translate(0,0)
+      scale(1);
+  }
+
+  100% {
+    transform:
+      translate(-150px,-130px)
+      scale(1.25);
+  }
+
+}
+
+
+/* =========================
+   0 / 1 MATRIX
+========================= */
+
+.matrix {
+  position: absolute;
+
+  inset: 0;
+
+  overflow: hidden;
+
+  opacity: .22;
+}
+
+.matrix-column {
+  position: absolute;
+
+  top: -600px;
+
+  color: #21a9ff;
+
+  font-family: monospace;
+
+  font-size: 14px;
+
+  line-height: 22px;
+
+  text-shadow:
+    0 0 8px #168fff;
+
+  white-space: nowrap;
+
+  animation:
+    matrixFall linear infinite;
+}
+
+@keyframes matrixFall {
+
+  from {
+    transform:
+      translateY(-600px);
+  }
+
+  to {
+    transform:
+      translateY(120vh);
+  }
+
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+  position: absolute;
+
+  inset: -100px;
+
+  background-image:
+
+    linear-gradient(
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025)
+      1px,
+      transparent 1px
+    );
+
+  background-size:
+    45px 45px;
+
+  animation:
+    gridMove 12s linear infinite;
+}
+
+@keyframes gridMove {
+
+  from {
+    transform:
+      translate(0,0);
+  }
+
+  to {
+    transform:
+      translate(45px,45px);
+  }
+
+}
+
+
+/* =========================
+   SCAN LINE
+========================= */
+
+.scan-line {
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top: -5px;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #3faaff,
+      transparent
+    );
+
+  box-shadow:
+    0 0 25px #168fff;
+
+  animation:
+    scan 7s linear infinite;
+}
+
+@keyframes scan {
+
+  0% {
+    top: -5px;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+
+}
+
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-page {
+
+  position: relative;
+
+  z-index: 10;
+
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card {
+
+  width: 100%;
+
+  max-width: 410px;
+
+  padding:
+    35px 27px;
+
+  border-radius: 28px;
+
+  background:
+    rgba(5,12,22,.76);
+
+  border:
+    1px solid
+    rgba(255,255,255,.16);
+
+  backdrop-filter:
+    blur(25px);
+
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  box-shadow:
+
+    0 30px 80px
+    rgba(0,0,0,.7),
+
+    inset 0 1px
+    rgba(255,255,255,.12);
+
+  text-align: center;
+
+  animation:
+    cardAppear .7s ease;
+}
+
+@keyframes cardAppear {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(35px)
+      scale(.95);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+/* =========================
+   CCTV ICON
+========================= */
+
+.cctv-icon {
+
+  position: relative;
+
+  width: 105px;
+  height: 90px;
+
+  margin:
+    0 auto 15px;
+
+  animation:
+    cameraFloat 3s ease-in-out infinite;
+}
+
+@keyframes cameraFloat {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-6px);
+  }
+
+}
+
+
+/* CAMERA BODY */
+
+.camera-body {
+
+  position: absolute;
+
+  left: 5px;
+  top: 23px;
+
+  width: 70px;
+  height: 43px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #33475c,
+      #0b1420
+    );
+
+  border:
+    1px solid
+    rgba(90,180,255,.65);
+
+  box-shadow:
+
+    0 0 25px
+    rgba(30,150,255,.4),
+
+    inset 0 1px
+    rgba(255,255,255,.15);
+}
+
+
+/* CAMERA LENS */
+
+.camera-lens {
+
+  position: absolute;
+
+  left: 70px;
+  top: 29px;
+
+  width: 32px;
+  height: 29px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #172a3e,
+      #03080e
+    );
+
+  border:
+    1px solid
+    rgba(80,170,255,.7);
+
+  box-shadow:
+    0 0 18px
+    rgba(30,150,255,.4);
+}
+
+
+/* LENS GLASS */
+
+.camera-lens::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 8px;
+  top: 7px;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background:
+    #020912;
+
+  border:
+    2px solid
+    #42adff;
+
+  box-shadow:
+    0 0 12px
+    #168fff;
+}
+
+
+/* RED CAMERA LIGHT */
+
+.camera-light {
+
+  position: absolute;
+
+  left: 14px;
+  top: 10px;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    #ff3658;
+
+  box-shadow:
+    0 0 12px
+    #ff3658;
+
+  animation:
+    blink 1.5s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: .25;
+  }
+
+}
+
+
+/* CAMERA ARM */
+
+.camera-arm {
+
+  position: absolute;
+
+  left: 28px;
+  top: 65px;
+
+  width: 8px;
+  height: 20px;
+
+  border-radius: 5px;
+
+  background:
+    #24384c;
+
+  border:
+    1px solid
+    rgba(100,180,255,.4);
+}
+
+
+/* CAMERA BASE */
+
+.camera-base {
+
+  position: absolute;
+
+  left: 15px;
+  top: 83px;
+
+  width: 36px;
+  height: 7px;
+
+  border-radius: 6px;
+
+  background:
+    #172536;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.login-card h1 {
+
+  margin: 0;
+
+  font-size: 29px;
+
+  letter-spacing: 2px;
+}
+
+.subtitle {
+
+  margin:
+    9px 0 28px;
+
+  color:
+    #8996aa;
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password-box {
+
+  position: relative;
+
+  width: 100%;
+}
+
+.password-box input {
+
+  width: 100%;
+
+  height: 55px;
+
+  padding:
+    0 52px 0 17px;
+
+  border-radius: 15px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.14);
+
+  outline: none;
+
+  background:
+    rgba(0,0,0,.38);
+
+  color: white;
+
+  font-size: 16px;
+
+  transition:
+    .25s;
+}
+
+.password-box input:focus {
+
+  border-color:
+    #329dff;
+
+  box-shadow:
+    0 0 20px
+    rgba(30,130,255,.2);
+}
+
+.password-box input::placeholder {
+
+  color:
+    #68758a;
+}
+
+
+/* EYE */
+
+.show-password {
+
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  border: none;
+
+  background:
+    transparent;
+
+  color:
+    #aab6c8;
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.login-button {
+
+  width: 100%;
+
+  height: 55px;
+
+  margin-top: 18px;
+
+  border: none;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #dce8f8
+    );
+
+  color:
+    #07101e;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    .2s;
+}
+
+.login-button:active {
+
+  transform:
+    scale(.97);
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+#error {
+
+  min-height: 22px;
+
+  margin-top: 14px;
+
+  color:
+    #ff6677;
+
+  font-size: 14px;
+}
+
+
+/* =========================
+   CREATED BY
+========================= */
+
+.security {
+
+  margin-top: 20px;
+
+  color:
+    #65748a;
+
+  font-size: 12px;
+}
+
+.created-by {
+
+  margin-top: 12px;
+
+  color:
+    #718096;
+
+  font-size: 12px;
+
+  letter-spacing: 1px;
+}
+
+.created-by span {
+
+  color:
+    #4da6ff;
+
+  font-weight: bold;
+
+  text-shadow:
+    0 0 10px
+    rgba(77,166,255,.6);
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.hidden {
+  display: none !important;
+}
+
+.dashboard {
+
+  position: relative;
+
+  z-index: 10;
+
+  width: 100%;
+
+  min-height: 100vh;
+
+  overflow-y: auto;
+}
+
+.header {
+
+  padding:
+    23px 18px;
+
+  text-align: center;
+
+  background:
+    rgba(3,9,17,.85);
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.08);
+
+  backdrop-filter:
+    blur(20px);
+}
+
+.header h1 {
+
+  margin: 0;
+
+  font-size: 25px;
+}
+
+.header p {
+
+  margin:
+    7px 0 0;
+
+  color:
+    #8794a8;
+}
+
+.container {
+
+  width: 100%;
+
+  max-width: 950px;
+
+  margin: auto;
+
+  padding: 18px;
+}
+
+
+/* CARDS */
+
+.camera-card,
+.status-card {
+
+  padding: 14px;
+
+  margin-bottom: 16px;
+
+  border-radius: 22px;
+
+  background:
+    rgba(5,12,22,.72);
+
+  border:
+    1px solid
+    rgba(255,255,255,.10);
+
+  backdrop-filter:
+    blur(18px);
+
+  box-shadow:
+    0 20px 50px
+    rgba(0,0,0,.35);
+}
+
+
+/* CAMERA SCREEN */
+
+.camera-screen {
+
+  min-height: 330px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #141e2d,
+      #02050a
+    );
+
+  text-align: center;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.camera-screen::before {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background:
+    rgba(70,160,255,.5);
+
+  box-shadow:
+    0 0 20px
+    #168fff;
+
+  animation:
+    cameraScan 4s linear infinite;
+}
+
+@keyframes cameraScan {
+
+  from {
+    top: 0;
+  }
+
+  to {
+    top: 100%;
+  }
+
+}
+
+.camera-icon {
+
+  font-size: 58px;
+}
+
+.camera-title {
+
+  margin-top: 10px;
+
+  font-size: 18px;
+}
+
+.camera-subtitle {
+
+  margin-top: 6px;
+
+  color:
+    #69778b;
+}
+
+.online {
+
+  color:
+    #3ee58b;
+
+  font-size: 14px;
+}
+
+
+/* STATUS */
+
+.status-card strong {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-size: 17px;
+}
+
+.status-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 8px 0;
+
+  color:
+    #aab6c8;
+}
+
+
+/* LOGOUT */
+
+.logout {
+
+  width: 100%;
+
+  padding: 15px;
+
+  border-radius: 15px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  background:
+    rgba(255,255,255,.06);
+
+  color: white;
+
+  font-size: 15px;
+
+  cursor: pointer;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .login-card {
+
+    padding:
+      30px 21px;
+  }
+
+  .camera-screen {
+
+    min-height:
+      260px;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     ANIMATED BACKGROUND
+========================= -->
+
+<div class="background">
+
+  <div class="blue-glow"></div>
+
+  <div class="purple-glow"></div>
+
+  <div
+    id="matrix"
+    class="matrix">
+  </div>
+
+  <div class="grid"></div>
+
+  <div class="scan-line"></div>
+
+</div>
+
+
+
+<!-- =========================
+     LOGIN PAGE
+========================= -->
+
+<div
+  id="loginPage"
+  class="login-page">
+
+  <div
+    id="loginCard"
+    class="login-card">
+
+
+    <!-- CCTV CAMERA -->
+
+    <div class="cctv-icon">
+
+      <div class="camera-body">
+
+        <div class="camera-light"></div>
+
+      </div>
+
+      <div class="camera-lens"></div>
+
+      <div class="camera-arm"></div>
+
+      <div class="camera-base"></div>
+
+    </div>
+
+
+    <h1>
+      HOME CCTV
+    </h1>
+
+
+    <p class="subtitle">
+      Secure Security Dashboard
+    </p>
+
+
+    <!-- PASSWORD -->
+
+    <div class="password-box">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter security password"
+        autocomplete="off"
+      >
+
+      <button
+        id="eyeButton"
+        class="show-password"
+        type="button">
+
+        👁️
+
+      </button>
+
+    </div>
+
+
+    <!-- LOGIN -->
+
+    <button
+      id="loginButton"
+      class="login-button"
+      type="button">
+
+      🔓 Unlock Dashboard
+
+    </button>
+
+
+    <div id="error"></div>
+
+
+    <div class="security">
+      🔒 HOME SECURITY SYSTEM
+    </div>
+
+
+    <div class="created-by">
+      Created by <span>Anu</span>
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div
+  id="dashboard"
+  class="dashboard hidden">
+
+
+  <div class="header">
+
+    <h1>
+      HOME CCTV
+    </h1>
+
+    <p>
+      Security Camera Dashboard
+    </p>
+
+  </div>
+
+
+  <div class="container">
+
+
+    <!-- CAMERA -->
+
+    <div class="camera-card">
+
+      <div class="camera-screen">
+
+        <div>
+
+          <div class="camera-icon">
+            📹
+          </div>
+
+          <div class="camera-title">
+            Camera Offline
+          </div>
+
+          <div class="camera-subtitle">
+            Waiting for CCTV connection...
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p class="online">
+        ● SYSTEM READY
+      </p>
+
+    </div>
+
+
+    <!-- FACE DETECTION -->
+
+    <div class="status-card">
+
+      <strong>
+        Face Detection
+      </strong>
+
+      <div class="status-row">
+
+        <span>
+          Status
+        </span>
+
+        <span id="faceStatus">
+          No face detected
+        </span>
+
+      </div>
+
+
+      <div class="status-row">
+
+        <span>
+          Face Count
+        </span>
+
+        <span id="faceCount">
+          0
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- TIME -->
+
+    <div class="status-card">
+
+      <strong>
+        System Time
+      </strong>
+
+      <div id="time">
+        --:--:--
+      </div>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+
+    <button
+      id="logoutButton"
+      class="logout"
+      type="button">
+
+      🔒 Lock Dashboard
+
+    </button>
+
+
+  </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================
+   PASSWORD
+========================= */
+
 const PASSWORD = "ANU1234@";
 
+
+/* =========================
+   ELEMENTS
+========================= */
+
+const loginPage =
+  document.getElementById("loginPage");
+
+const dashboard =
+  document.getElementById("dashboard");
+
+const passwordInput =
+  document.getElementById("password");
+
+const errorMessage =
+  document.getElementById("error");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+const eyeButton =
+  document.getElementById("eyeButton");
+
+
+/* =========================
+   LOGIN FUNCTION
+========================= */
+
 function login() {
-  const input = document.getElementById("password");
-  const error = document.getElementById("error");
 
-  if (input.value.trim() === PASSWORD) {
-    error.textContent = "";
+  const enteredPassword =
+    passwordInput.value;
 
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("dashboard").classList.remove("hidden");
+  if (enteredPassword === PASSWORD) {
+
+    errorMessage.textContent = "";
+
+    loginPage.classList.add("hidden");
+
+    dashboard.classList.remove("hidden");
+
   } else {
-    error.textContent = "❌ Incorrect password";
+
+    errorMessage.textContent =
+      "❌ Incorrect password";
+
   }
+
 }
+
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+loginButton.addEventListener(
+  "click",
+  login
+);
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+passwordInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Enter") {
+
+      login();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   SHOW PASSWORD
+========================= */
+
+eyeButton.addEventListener(
+  "click",
+  function() {
+
+    if (
+      passwordInput.type ===
+      "password"
+    ) {
+
+      passwordInput.type =
+        "text";
+
+      eyeButton.textContent =
+        "🙈";
+
+    } else {
+
+      passwordInput.type =
+        "password";
+
+      eyeButton.textContent =
+        "👁️";
+
+    }
+
+  }
+);
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+logoutButton.addEventListener(
+  "click",
+  function() {
+
+    dashboard.classList.add(
+      "hidden"
+    );
+
+    loginPage.classList.remove(
+      "hidden"
+    );
+
+    passwordInput.value = "";
+
+    errorMessage.textContent = "";
+
+  }
+);
+
+
+/* =========================
+   MATRIX 0 / 1
+========================= */
+
+const matrix =
+  document.getElementById("matrix");
+
+for (
+  let i = 0;
+  i < 40;
+  i++
+) {
+
+  const column =
+    document.createElement("div");
+
+  column.className =
+    "matrix-column";
+
+  column.style.left =
+    Math.random() * 100 + "%";
+
+  column.style.animationDuration =
+    (4 + Math.random() * 8) + "s";
+
+  column.style.animationDelay =
+    (-Math.random() * 10) + "s";
+
+  let numbers = "";
+
+  for (
+    let j = 0;
+    j < 35;
+    j++
+  ) {
+
+    numbers +=
+      Math.random() > .5
+      ? "1<br>"
+      : "0<br>";
+
+  }
+
+  column.innerHTML =
+    numbers;
+
+  matrix.appendChild(
+    column
+  );
+
+}
+
+
+/* =========================
+   CLOCK
+========================= */
+
+function updateTime() {
+
+  document
+    .getElementById("time")
+    .textContent =
+      new Date()
+      .toLocaleTimeString();
+
+}
+
+updateTime();
+
+setInterval(
+  updateTime,
+  1000
+);
+
+</script>
+
+</body>
+</html>
