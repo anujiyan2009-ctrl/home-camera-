@@ -11,138 +11,462 @@
 
 body {
   margin: 0;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
-  background: #0b1220;
   color: white;
+  background:
+    radial-gradient(circle at top left, #243b55, transparent 45%),
+    radial-gradient(circle at bottom right, #141e30, transparent 45%),
+    #070b12;
+}
+
+/* LOGIN */
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 390px;
+  padding: 35px 28px;
+  border-radius: 25px;
+
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow: 0 25px 60px rgba(0,0,0,.45);
+  text-align: center;
+}
+
+.lock {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: rgba(255,255,255,.1);
+  font-size: 35px;
+}
+
+.login-card h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.subtitle {
+  color: #aeb9ca;
+  margin: 10px 0 28px;
+}
+
+.password-box {
+  position: relative;
+}
+
+.password-box input {
+  width: 100%;
+  padding: 16px 50px 16px 16px;
+
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 14px;
+
+  outline: none;
+  background: rgba(0,0,0,.25);
+  color: white;
+  font-size: 16px;
+}
+
+.password-box input::placeholder {
+  color: #8995a8;
+}
+
+.show-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border: 0;
+  background: none;
+  color: #b9c4d5;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 18px;
+  padding: 16px;
+
+  border: 0;
+  border-radius: 14px;
+
+  background: #ffffff;
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-button:active {
+  transform: scale(.98);
+}
+
+#error {
+  min-height: 22px;
+  margin-top: 15px;
+  color: #ff7b7b;
+  font-size: 14px;
+}
+
+.security {
+  margin-top: 22px;
+  color: #8290a5;
+  font-size: 12px;
+}
+
+/* DASHBOARD */
+
+.hidden {
+  display: none !important;
+}
+
+.dashboard {
+  min-height: 100vh;
 }
 
 .header {
-  padding: 20px;
-  background: #111b2e;
+  padding: 22px;
   text-align: center;
+  background: rgba(10,15,25,.8);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .header h1 {
   margin: 0;
-  font-size: 25px;
 }
 
 .header p {
-  margin: 7px 0 0;
-  color: #aebbd0;
+  color: #9ba8ba;
 }
 
 .container {
-  padding: 16px;
-  max-width: 900px;
+  width: 100%;
+  max-width: 950px;
   margin: auto;
+  padding: 18px;
 }
 
-.camera-card {
-  background: #111b2e;
-  border-radius: 18px;
-  padding: 12px;
+.camera-card,
+.status-card {
+  padding: 14px;
+  margin-bottom: 16px;
+
+  border-radius: 20px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
 }
 
 .camera-screen {
-  height: 300px;
-  background: #05080e;
-  border-radius: 12px;
+  min-height: 320px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border-radius: 15px;
+  background: #05080d;
   text-align: center;
-  color: #8794a8;
 }
 
-.camera-screen span {
-  font-size: 45px;
+.camera-icon {
+  font-size: 55px;
+}
+
+.camera-title {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.camera-subtitle {
+  color: #778397;
+  margin-top: 5px;
+}
+
+.status-card strong {
   display: block;
-}
-
-.camera-info {
-  display: flex;
-  justify-content: space-between;
-  padding: 14px 4px 4px;
+  font-size: 17px;
+  margin-bottom: 8px;
 }
 
 .online {
-  color: #38e68c;
+  color: #3ee58b;
 }
 
-.status {
-  margin-top: 15px;
-  padding: 15px;
-  background: #111b2e;
-  border-radius: 14px;
-}
+.logout {
+  width: 100%;
+  padding: 14px;
+  margin-top: 5px;
 
-.status strong {
-  display: block;
-  font-size: 18px;
-  margin-bottom: 5px;
-}
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 13px;
 
-.footer {
-  text-align: center;
-  color: #66758b;
-  margin-top: 25px;
-  font-size: 13px;
+  background: rgba(255,255,255,.06);
+  color: white;
+  font-size: 15px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h1>🏠 Home CCTV</h1>
-  <p>Security Camera Dashboard</p>
+<!-- LOGIN PAGE -->
+
+<div id="loginPage" class="login-page">
+
+  <div class="login-card">
+
+    <div class="lock">🔐</div>
+
+    <h1>Home CCTV</h1>
+
+    <p class="subtitle">
+      Secure Security Dashboard
+    </p>
+
+    <div class="password-box">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter security password"
+        autocomplete="off"
+      >
+
+      <button
+        class="show-password"
+        onclick="togglePassword()"
+        type="button"
+        id="eyeButton"
+      >👁️</button>
+
+    </div>
+
+    <button
+      class="login-button"
+      onclick="login()"
+    >
+      🔓 Unlock Dashboard
+    </button>
+
+    <div id="error"></div>
+
+    <div class="security">
+      🔒 Protected Home Security System
+    </div>
+
+  </div>
+
 </div>
 
-<div class="container">
 
-  <div class="camera-card">
+<!-- DASHBOARD -->
 
-    <div class="camera-screen">
-      <div>
-        <span>📹</span>
-        <div>Camera Offline</div>
-        <small>Waiting for CCTV connection...</small>
+<div id="dashboard" class="dashboard hidden">
+
+  <div class="header">
+    <h1>🏠 Home CCTV</h1>
+    <p>Security Camera Dashboard</p>
+  </div>
+
+  <div class="container">
+
+    <div class="camera-card">
+
+      <div class="camera-screen">
+
+        <div>
+          <div class="camera-icon">📹</div>
+
+          <div class="camera-title">
+            Camera Offline
+          </div>
+
+          <div class="camera-subtitle">
+            Waiting for CCTV connection...
+          </div>
+        </div>
+
       </div>
+
+      <p class="online">
+        ● System Ready
+      </p>
+
     </div>
 
-    <div class="camera-info">
-      <div>Camera 01</div>
-      <div class="online">● System Ready</div>
+
+    <div class="status-card">
+
+      <strong>👤 Face Detection</strong>
+
+      <div id="faceStatus">
+        No face detected
+      </div>
+
+      <div id="faceCount">
+        🔢 Faces: 0
+      </div>
+
     </div>
 
-  </div>
 
-  <div class="status">
-    <strong>👤 Face Detection</strong>
-    <div id="faceStatus">Waiting for camera...</div>
-  </div>
+    <div class="status-card">
 
-  <div class="status">
-    <strong>🕐 Current Time</strong>
-    <div id="time">--:--:--</div>
-  </div>
+      <strong>🕐 Current Time</strong>
 
-  <div class="footer">
-    Home CCTV • Personal Security Dashboard
+      <div id="time">
+        --:--:--
+      </div>
+
+    </div>
+
+
+    <button
+      class="logout"
+      onclick="logout()"
+    >
+      🔒 Lock Dashboard
+    </button>
+
   </div>
 
 </div>
+
 
 <script>
+
+/* CHANGE YOUR PASSWORD HERE */
+
+const PASSWORD = "ANU1234@";
+
+
+/* LOGIN */
+
+function login() {
+
+  const enteredPassword =
+    document.getElementById("password").value;
+
+  const error =
+    document.getElementById("error");
+
+  if (enteredPassword === PASSWORD) {
+
+    document
+      .getElementById("loginPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("dashboard")
+      .classList.remove("hidden");
+
+    error.textContent = "";
+
+  } else {
+
+    error.textContent =
+      "❌ Incorrect password";
+
+  }
+}
+
+
+/* SHOW / HIDE PASSWORD */
+
+function togglePassword() {
+
+  const input =
+    document.getElementById("password");
+
+  const button =
+    document.getElementById("eyeButton");
+
+  if (input.type === "password") {
+
+    input.type = "text";
+    button.textContent = "🙈";
+
+  } else {
+
+    input.type = "password";
+    button.textContent = "👁️";
+
+  }
+}
+
+
+/* ENTER KEY LOGIN */
+
+document
+  .getElementById("password")
+  .addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+      login();
+    }
+
+  });
+
+
+/* LOGOUT */
+
+function logout() {
+
+  document
+    .getElementById("dashboard")
+    .classList.add("hidden");
+
+  document
+    .getElementById("loginPage")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("password")
+    .value = "";
+
+}
+
+
+/* CLOCK */
+
 function updateTime() {
-  const now = new Date();
-  document.getElementById("time").textContent =
-    now.toLocaleTimeString();
+
+  document
+    .getElementById("time")
+    .textContent =
+      new Date().toLocaleTimeString();
+
 }
 
 updateTime();
+
 setInterval(updateTime, 1000);
+
 </script>
 
 </body>
