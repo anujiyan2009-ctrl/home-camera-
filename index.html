@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<meta name="theme-color" content="#000000">
 
 <title>Home CCTV</title>
 
@@ -14,6 +21,7 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
@@ -22,37 +30,43 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100%;
+  background: #000;
+  color: white;
+  font-family: Arial, sans-serif;
 }
 
 body {
-  min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+}
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  color: white;
-
-  background:
-    #02060b;
+.hidden {
+  display: none !important;
 }
 
 
-/* =========================
-   BACKGROUND
-========================= */
+/* =====================================================
+   LOGIN
+===================================================== */
 
-.background {
-  position: fixed;
+.login-page {
+  position: relative;
+  min-height: 100vh;
 
-  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
 
   overflow: hidden;
 
-  z-index: 0;
+  background: #02060b;
+}
 
+.login-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -62,8 +76,8 @@ body {
 .blue-glow {
   position: absolute;
 
-  width: 380px;
-  height: 380px;
+  width: 400px;
+  height: 400px;
 
   left: -150px;
   top: -120px;
@@ -74,7 +88,7 @@ body {
 
   filter: blur(110px);
 
-  opacity: .22;
+  opacity: .23;
 
   animation:
     blueMove 10s ease-in-out infinite alternate;
@@ -82,16 +96,12 @@ body {
 
 @keyframes blueMove {
 
-  0% {
-    transform:
-      translate(0,0)
-      scale(1);
+  from {
+    transform: translate(0,0) scale(1);
   }
 
-  100% {
-    transform:
-      translate(170px,150px)
-      scale(1.25);
+  to {
+    transform: translate(170px,150px) scale(1.25);
   }
 
 }
@@ -102,8 +112,8 @@ body {
 .purple-glow {
   position: absolute;
 
-  width: 380px;
-  height: 380px;
+  width: 400px;
+  height: 400px;
 
   right: -150px;
   bottom: -150px;
@@ -122,28 +132,21 @@ body {
 
 @keyframes purpleMove {
 
-  0% {
-    transform:
-      translate(0,0)
-      scale(1);
+  from {
+    transform: translate(0,0) scale(1);
   }
 
-  100% {
-    transform:
-      translate(-150px,-130px)
-      scale(1.25);
+  to {
+    transform: translate(-150px,-130px) scale(1.25);
   }
 
 }
 
 
-/* =========================
-   0 / 1 MATRIX
-========================= */
+/* 0 / 1 */
 
 .matrix {
   position: absolute;
-
   inset: 0;
 
   overflow: hidden;
@@ -164,10 +167,10 @@ body {
 
   line-height: 22px;
 
+  white-space: nowrap;
+
   text-shadow:
     0 0 8px #168fff;
-
-  white-space: nowrap;
 
   animation:
     matrixFall linear infinite;
@@ -176,44 +179,36 @@ body {
 @keyframes matrixFall {
 
   from {
-    transform:
-      translateY(-600px);
+    transform: translateY(-600px);
   }
 
   to {
-    transform:
-      translateY(120vh);
+    transform: translateY(120vh);
   }
 
 }
 
 
-/* =========================
-   GRID
-========================= */
+/* GRID */
 
-.grid {
+.login-grid {
   position: absolute;
-
   inset: -100px;
 
   background-image:
 
     linear-gradient(
-      rgba(255,255,255,.025)
-      1px,
+      rgba(255,255,255,.025) 1px,
       transparent 1px
     ),
 
     linear-gradient(
       90deg,
-      rgba(255,255,255,.025)
-      1px,
+      rgba(255,255,255,.025) 1px,
       transparent 1px
     );
 
-  background-size:
-    45px 45px;
+  background-size: 45px 45px;
 
   animation:
     gridMove 12s linear infinite;
@@ -222,24 +217,19 @@ body {
 @keyframes gridMove {
 
   from {
-    transform:
-      translate(0,0);
+    transform: translate(0,0);
   }
 
   to {
-    transform:
-      translate(45px,45px);
+    transform: translate(45px,45px);
   }
 
 }
 
 
-/* =========================
-   SCAN LINE
-========================= */
+/* SCAN */
 
-.scan-line {
-
+.login-scan {
   position: absolute;
 
   left: 0;
@@ -261,10 +251,10 @@ body {
     0 0 25px #168fff;
 
   animation:
-    scan 7s linear infinite;
+    scanMove 7s linear infinite;
 }
 
-@keyframes scan {
+@keyframes scanMove {
 
   0% {
     top: -5px;
@@ -287,46 +277,24 @@ body {
 }
 
 
-/* =========================
-   LOGIN PAGE
-========================= */
+/* =====================================================
+   LOGIN CARD
+===================================================== */
 
-.login-page {
-
+.login-card {
   position: relative;
 
   z-index: 10;
 
   width: 100%;
-  min-height: 100vh;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 20px;
-}
-
-
-/* =========================
-   LOGIN CARD
-========================= */
-
-.login-card {
-
-  width: 100%;
-
   max-width: 410px;
 
-  padding:
-    35px 27px;
+  padding: 35px 27px;
 
   border-radius: 28px;
 
   background:
-    rgba(5,12,22,.76);
+    rgba(5,12,22,.78);
 
   border:
     1px solid
@@ -339,12 +307,7 @@ body {
     blur(25px);
 
   box-shadow:
-
-    0 30px 80px
-    rgba(0,0,0,.7),
-
-    inset 0 1px
-    rgba(255,255,255,.12);
+    0 30px 80px rgba(0,0,0,.7);
 
   text-align: center;
 
@@ -355,7 +318,6 @@ body {
 @keyframes cardAppear {
 
   from {
-
     opacity: 0;
 
     transform:
@@ -364,7 +326,6 @@ body {
   }
 
   to {
-
     opacity: 1;
 
     transform:
@@ -375,12 +336,11 @@ body {
 }
 
 
-/* =========================
+/* =====================================================
    CCTV ICON
-========================= */
+===================================================== */
 
 .cctv-icon {
-
   position: relative;
 
   width: 105px;
@@ -388,31 +348,9 @@ body {
 
   margin:
     0 auto 15px;
-
-  animation:
-    cameraFloat 3s ease-in-out infinite;
 }
-
-@keyframes cameraFloat {
-
-  0%,
-  100% {
-    transform:
-      translateY(0);
-  }
-
-  50% {
-    transform:
-      translateY(-6px);
-  }
-
-}
-
-
-/* CAMERA BODY */
 
 .camera-body {
-
   position: absolute;
 
   left: 5px;
@@ -435,19 +373,11 @@ body {
     rgba(90,180,255,.65);
 
   box-shadow:
-
     0 0 25px
-    rgba(30,150,255,.4),
-
-    inset 0 1px
-    rgba(255,255,255,.15);
+    rgba(30,150,255,.4);
 }
 
-
-/* CAMERA LENS */
-
 .camera-lens {
-
   position: absolute;
 
   left: 70px;
@@ -458,27 +388,14 @@ body {
 
   border-radius: 8px;
 
-  background:
-    linear-gradient(
-      145deg,
-      #172a3e,
-      #03080e
-    );
+  background: #03080e;
 
   border:
     1px solid
     rgba(80,170,255,.7);
-
-  box-shadow:
-    0 0 18px
-    rgba(30,150,255,.4);
 }
 
-
-/* LENS GLASS */
-
 .camera-lens::after {
-
   content: "";
 
   position: absolute;
@@ -491,23 +408,16 @@ body {
 
   border-radius: 50%;
 
-  background:
-    #020912;
+  background: #020912;
 
   border:
-    2px solid
-    #42adff;
+    2px solid #42adff;
 
   box-shadow:
-    0 0 12px
-    #168fff;
+    0 0 12px #168fff;
 }
 
-
-/* RED CAMERA LIGHT */
-
 .camera-light {
-
   position: absolute;
 
   left: 14px;
@@ -518,18 +428,16 @@ body {
 
   border-radius: 50%;
 
-  background:
-    #ff3658;
+  background: #ff3658;
 
   box-shadow:
-    0 0 12px
-    #ff3658;
+    0 0 12px #ff3658;
 
   animation:
-    blink 1.5s infinite;
+    cameraBlink 1.5s infinite;
 }
 
-@keyframes blink {
+@keyframes cameraBlink {
 
   0%,
   45% {
@@ -543,11 +451,7 @@ body {
 
 }
 
-
-/* CAMERA ARM */
-
 .camera-arm {
-
   position: absolute;
 
   left: 28px;
@@ -558,19 +462,10 @@ body {
 
   border-radius: 5px;
 
-  background:
-    #24384c;
-
-  border:
-    1px solid
-    rgba(100,180,255,.4);
+  background: #24384c;
 }
 
-
-/* CAMERA BASE */
-
 .camera-base {
-
   position: absolute;
 
   left: 15px;
@@ -581,17 +476,15 @@ body {
 
   border-radius: 6px;
 
-  background:
-    #172536;
+  background: #172536;
 }
 
 
-/* =========================
-   TITLE
-========================= */
+/* =====================================================
+   LOGIN TEXT
+===================================================== */
 
 .login-card h1 {
-
   margin: 0;
 
   font-size: 29px;
@@ -600,28 +493,21 @@ body {
 }
 
 .subtitle {
-
   margin:
     9px 0 28px;
 
-  color:
-    #8996aa;
+  color: #8996aa;
 }
 
 
-/* =========================
-   PASSWORD
-========================= */
+/* PASSWORD */
 
 .password-box {
-
   position: relative;
-
   width: 100%;
 }
 
 .password-box input {
-
   width: 100%;
 
   height: 55px;
@@ -643,15 +529,10 @@ body {
   color: white;
 
   font-size: 16px;
-
-  transition:
-    .25s;
 }
 
 .password-box input:focus {
-
-  border-color:
-    #329dff;
+  border-color: #329dff;
 
   box-shadow:
     0 0 20px
@@ -659,16 +540,10 @@ body {
 }
 
 .password-box input::placeholder {
-
-  color:
-    #68758a;
+  color: #68758a;
 }
 
-
-/* EYE */
-
 .show-password {
-
   position: absolute;
 
   right: 14px;
@@ -679,11 +554,9 @@ body {
 
   border: none;
 
-  background:
-    transparent;
+  background: transparent;
 
-  color:
-    #aab6c8;
+  color: #aab6c8;
 
   font-size: 19px;
 
@@ -691,12 +564,9 @@ body {
 }
 
 
-/* =========================
-   LOGIN BUTTON
-========================= */
+/* LOGIN BUTTON */
 
 .login-button {
-
   width: 100%;
 
   height: 55px;
@@ -714,63 +584,37 @@ body {
       #dce8f8
     );
 
-  color:
-    #07101e;
+  color: #07101e;
 
   font-size: 16px;
 
   font-weight: bold;
 
   cursor: pointer;
-
-  transition:
-    .2s;
 }
-
-.login-button:active {
-
-  transform:
-    scale(.97);
-}
-
-
-/* =========================
-   ERROR
-========================= */
 
 #error {
-
   min-height: 22px;
 
   margin-top: 14px;
 
-  color:
-    #ff6677;
+  color: #ff6677;
 
   font-size: 14px;
 }
 
-
-/* =========================
-   CREATED BY
-========================= */
-
 .security {
-
   margin-top: 20px;
 
-  color:
-    #65748a;
+  color: #65748a;
 
   font-size: 12px;
 }
 
 .created-by {
-
   margin-top: 12px;
 
-  color:
-    #718096;
+  color: #718096;
 
   font-size: 12px;
 
@@ -778,266 +622,259 @@ body {
 }
 
 .created-by span {
-
-  color:
-    #4da6ff;
+  color: #4da6ff;
 
   font-weight: bold;
-
-  text-shadow:
-    0 0 10px
-    rgba(77,166,255,.6);
 }
 
 
-/* =========================
+/* =====================================================
    DASHBOARD
-========================= */
-
-.hidden {
-  display: none !important;
-}
+===================================================== */
 
 .dashboard {
-
-  position: relative;
-
-  z-index: 10;
-
   width: 100%;
-
   min-height: 100vh;
 
-  overflow-y: auto;
+  background: #000;
+
+  color: white;
 }
 
-.header {
 
-  padding:
-    23px 18px;
+/* =====================================================
+   CAMERA PLAYER
+===================================================== */
 
-  text-align: center;
+.camera-wrapper {
 
-  background:
-    rgba(3,9,17,.85);
-
-  border-bottom:
-    1px solid
-    rgba(255,255,255,.08);
-
-  backdrop-filter:
-    blur(20px);
-}
-
-.header h1 {
-
-  margin: 0;
-
-  font-size: 25px;
-}
-
-.header p {
-
-  margin:
-    7px 0 0;
-
-  color:
-    #8794a8;
-}
-
-.container {
+  position: relative;
 
   width: 100%;
 
-  max-width: 950px;
+  height: 78vh;
 
-  margin: auto;
+  min-height: 400px;
 
-  padding: 18px;
-}
-
-
-/* CARDS */
-
-.camera-card,
-.status-card {
-
-  padding: 14px;
-
-  margin-bottom: 16px;
-
-  border-radius: 22px;
-
-  background:
-    rgba(5,12,22,.72);
-
-  border:
-    1px solid
-    rgba(255,255,255,.10);
-
-  backdrop-filter:
-    blur(18px);
-
-  box-shadow:
-    0 20px 50px
-    rgba(0,0,0,.35);
-}
-
-
-/* CAMERA SCREEN */
-
-.camera-screen {
-
-  min-height: 330px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 16px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #141e2d,
-      #02050a
-    );
-
-  text-align: center;
-
-  position: relative;
+  background: #000;
 
   overflow: hidden;
 }
 
-.camera-screen::before {
 
-  content: "";
+/* CAMERA */
+
+.camera-screen {
 
   position: absolute;
 
-  left: 0;
-  right: 0;
+  inset: 0;
 
-  height: 2px;
+  width: 100%;
+  height: 100%;
 
-  background:
-    rgba(70,160,255,.5);
+  display: flex;
 
-  box-shadow:
-    0 0 20px
-    #168fff;
+  align-items: center;
+  justify-content: center;
 
-  animation:
-    cameraScan 4s linear infinite;
+  background: #000;
 }
 
-@keyframes cameraScan {
-
-  from {
-    top: 0;
-  }
-
-  to {
-    top: 100%;
-  }
-
+.camera-placeholder {
+  text-align: center;
 }
 
 .camera-icon {
-
-  font-size: 58px;
+  font-size: 70px;
+  margin-bottom: 15px;
 }
 
 .camera-title {
-
-  margin-top: 10px;
-
-  font-size: 18px;
+  font-size: 21px;
+  font-weight: bold;
 }
 
 .camera-subtitle {
+  margin-top: 8px;
 
-  margin-top: 6px;
-
-  color:
-    #69778b;
-}
-
-.online {
-
-  color:
-    #3ee58b;
+  color: #718096;
 
   font-size: 14px;
 }
 
 
-/* STATUS */
+/* =====================================================
+   FULLSCREEN BUTTON
+===================================================== */
 
-.status-card strong {
+.fullscreen-button {
 
-  display: block;
+  position: absolute;
 
-  margin-bottom: 8px;
+  right: 15px;
+  bottom: 15px;
 
-  font-size: 17px;
-}
+  z-index: 100;
 
-.status-row {
-
-  display: flex;
-
-  justify-content: space-between;
-
-  padding: 8px 0;
-
-  color:
-    #aab6c8;
-}
-
-
-/* LOGOUT */
-
-.logout {
-
-  width: 100%;
-
-  padding: 15px;
+  width: 54px;
+  height: 54px;
 
   border-radius: 15px;
 
   border:
     1px solid
-    rgba(255,255,255,.12);
+    rgba(255,255,255,.3);
 
   background:
-    rgba(255,255,255,.06);
+    rgba(0,0,0,.72);
 
   color: white;
 
-  font-size: 15px;
+  font-size: 26px;
 
   cursor: pointer;
+
+  touch-action: manipulation;
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+.fullscreen-button:active {
+  transform: scale(.92);
 }
 
 
-/* MOBILE */
+/* =====================================================
+   REAL FULLSCREEN
+===================================================== */
+
+.camera-wrapper.real-fullscreen {
+
+  position: fixed !important;
+
+  left: 0 !important;
+  top: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  min-height: 100vh !important;
+
+  z-index: 999999 !important;
+
+  background: #000 !important;
+}
+
+
+/* Camera becomes full display */
+
+.camera-wrapper.real-fullscreen
+.camera-screen {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  background: #000;
+}
+
+
+/* =====================================================
+   FACE PANEL
+===================================================== */
+
+.face-panel {
+
+  width: 100%;
+
+  padding: 20px;
+
+  background: #09131f;
+
+  border-top:
+    1px solid
+    rgba(255,255,255,.08);
+}
+
+.face-title {
+
+  font-size: 18px;
+
+  font-weight: bold;
+
+  margin-bottom: 14px;
+}
+
+.face-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 13px 0;
+
+  border-bottom:
+    1px solid
+    rgba(255,255,255,.06);
+
+  color: #aab6c8;
+}
+
+.face-row:last-child {
+  border-bottom: none;
+}
+
+.face-value {
+  color: white;
+  font-weight: bold;
+}
+
+
+/* =====================================================
+   FULLSCREEN: HIDE FACE PANEL
+===================================================== */
+
+body.camera-is-fullscreen
+.face-panel {
+  display: none !important;
+}
+
+
+/* =====================================================
+   LANDSCAPE
+===================================================== */
+
+@media
+(orientation: landscape)
+and (max-height: 600px) {
+
+  .camera-wrapper {
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 600px) {
 
-  .login-card {
-
-    padding:
-      30px 21px;
-  }
-
-  .camera-screen {
-
-    min-height:
-      260px;
+  .camera-wrapper {
+    height: 76vh;
+    min-height: 350px;
   }
 
 }
@@ -1049,50 +886,42 @@ body {
 <body>
 
 
-<!-- =========================
-     ANIMATED BACKGROUND
-========================= -->
-
-<div class="background">
-
-  <div class="blue-glow"></div>
-
-  <div class="purple-glow"></div>
-
-  <div
-    id="matrix"
-    class="matrix">
-  </div>
-
-  <div class="grid"></div>
-
-  <div class="scan-line"></div>
-
-</div>
-
-
-
-<!-- =========================
+<!-- =====================================================
      LOGIN PAGE
-========================= -->
+===================================================== -->
 
 <div
   id="loginPage"
   class="login-page">
 
-  <div
-    id="loginCard"
-    class="login-card">
+
+  <div class="login-background">
+
+    <div class="blue-glow"></div>
+
+    <div class="purple-glow"></div>
+
+    <div
+      id="matrix"
+      class="matrix">
+    </div>
+
+    <div class="login-grid"></div>
+
+    <div class="login-scan"></div>
+
+  </div>
 
 
-    <!-- CCTV CAMERA -->
+  <div class="login-card">
+
+
+    <!-- CCTV ICON -->
 
     <div class="cctv-icon">
 
       <div class="camera-body">
-
         <div class="camera-light"></div>
-
       </div>
 
       <div class="camera-lens"></div>
@@ -1137,8 +966,6 @@ body {
     </div>
 
 
-    <!-- LOGIN -->
-
     <button
       id="loginButton"
       class="login-button"
@@ -1168,127 +995,106 @@ body {
 
 
 
-<!-- =========================
+<!-- =====================================================
      DASHBOARD
-========================= -->
+===================================================== -->
 
 <div
   id="dashboard"
   class="dashboard hidden">
 
 
-  <div class="header">
+  <!-- CAMERA -->
 
-    <h1>
-      HOME CCTV
-    </h1>
-
-    <p>
-      Security Camera Dashboard
-    </p>
-
-  </div>
+  <div
+    id="cameraWrapper"
+    class="camera-wrapper">
 
 
-  <div class="container">
+    <div
+      id="cameraScreen"
+      class="camera-screen">
 
 
-    <!-- CAMERA -->
+      <div class="camera-placeholder">
 
-    <div class="camera-card">
+        <div class="camera-icon">
+          📹
+        </div>
 
-      <div class="camera-screen">
+        <div class="camera-title">
+          Camera Offline
+        </div>
 
-        <div>
-
-          <div class="camera-icon">
-            📹
-          </div>
-
-          <div class="camera-title">
-            Camera Offline
-          </div>
-
-          <div class="camera-subtitle">
-            Waiting for CCTV connection...
-          </div>
-
+        <div class="camera-subtitle">
+          Waiting for CCTV connection...
         </div>
 
       </div>
 
 
-      <p class="online">
-        ● SYSTEM READY
-      </p>
-
     </div>
 
 
-    <!-- FACE DETECTION -->
-
-    <div class="status-card">
-
-      <strong>
-        Face Detection
-      </strong>
-
-      <div class="status-row">
-
-        <span>
-          Status
-        </span>
-
-        <span id="faceStatus">
-          No face detected
-        </span>
-
-      </div>
-
-
-      <div class="status-row">
-
-        <span>
-          Face Count
-        </span>
-
-        <span id="faceCount">
-          0
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- TIME -->
-
-    <div class="status-card">
-
-      <strong>
-        System Time
-      </strong>
-
-      <div id="time">
-        --:--:--
-      </div>
-
-    </div>
-
-
-    <!-- LOGOUT -->
+    <!-- FULLSCREEN -->
 
     <button
-      id="logoutButton"
-      class="logout"
+      id="fullscreenButton"
+      class="fullscreen-button"
       type="button">
 
-      🔒 Lock Dashboard
+      ⛶
 
     </button>
 
 
   </div>
+
+
+  <!-- FACE DETECTION -->
+
+  <div class="face-panel">
+
+    <div class="face-title">
+      👤 Face Detection
+    </div>
+
+
+    <div class="face-row">
+
+      <span>
+        Face detected
+      </span>
+
+      <span
+        id="faceStatus"
+        class="face-value">
+
+        No
+
+      </span>
+
+    </div>
+
+
+    <div class="face-row">
+
+      <span>
+        Face count
+      </span>
+
+      <span
+        id="faceCount"
+        class="face-value">
+
+        0
+
+      </span>
+
+    </div>
+
+  </div>
+
 
 </div>
 
@@ -1296,16 +1102,16 @@ body {
 
 <script>
 
-/* =========================
+/* =====================================================
    PASSWORD
-========================= */
+===================================================== */
 
 const PASSWORD = "ANU1234@";
 
 
-/* =========================
+/* =====================================================
    ELEMENTS
-========================= */
+===================================================== */
 
 const loginPage =
   document.getElementById("loginPage");
@@ -1322,29 +1128,35 @@ const errorMessage =
 const loginButton =
   document.getElementById("loginButton");
 
-const logoutButton =
-  document.getElementById("logoutButton");
-
 const eyeButton =
   document.getElementById("eyeButton");
 
+const cameraWrapper =
+  document.getElementById("cameraWrapper");
 
-/* =========================
-   LOGIN FUNCTION
-========================= */
+const fullscreenButton =
+  document.getElementById("fullscreenButton");
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
 
 function login() {
 
-  const enteredPassword =
-    passwordInput.value;
-
-  if (enteredPassword === PASSWORD) {
+  if (
+    passwordInput.value === PASSWORD
+  ) {
 
     errorMessage.textContent = "";
 
-    loginPage.classList.add("hidden");
+    loginPage.classList.add(
+      "hidden"
+    );
 
-    dashboard.classList.remove("hidden");
+    dashboard.classList.remove(
+      "hidden"
+    );
 
   } else {
 
@@ -1356,60 +1168,47 @@ function login() {
 }
 
 
-/* =========================
-   LOGIN BUTTON
-========================= */
-
 loginButton.addEventListener(
   "click",
   login
 );
 
 
-/* =========================
-   ENTER KEY
-========================= */
+/* ENTER KEY */
 
 passwordInput.addEventListener(
   "keydown",
   function(event) {
 
     if (event.key === "Enter") {
-
       login();
-
     }
 
   }
 );
 
 
-/* =========================
+/* =====================================================
    SHOW PASSWORD
-========================= */
+===================================================== */
 
 eyeButton.addEventListener(
   "click",
   function() {
 
     if (
-      passwordInput.type ===
-      "password"
+      passwordInput.type === "password"
     ) {
 
-      passwordInput.type =
-        "text";
+      passwordInput.type = "text";
 
-      eyeButton.textContent =
-        "🙈";
+      eyeButton.textContent = "🙈";
 
     } else {
 
-      passwordInput.type =
-        "password";
+      passwordInput.type = "password";
 
-      eyeButton.textContent =
-        "👁️";
+      eyeButton.textContent = "👁️";
 
     }
 
@@ -1417,33 +1216,9 @@ eyeButton.addEventListener(
 );
 
 
-/* =========================
-   LOGOUT
-========================= */
-
-logoutButton.addEventListener(
-  "click",
-  function() {
-
-    dashboard.classList.add(
-      "hidden"
-    );
-
-    loginPage.classList.remove(
-      "hidden"
-    );
-
-    passwordInput.value = "";
-
-    errorMessage.textContent = "";
-
-  }
-);
-
-
-/* =========================
-   MATRIX 0 / 1
-========================= */
+/* =====================================================
+   MATRIX
+===================================================== */
 
 const matrix =
   document.getElementById("matrix");
@@ -1494,25 +1269,288 @@ for (
 }
 
 
-/* =========================
-   CLOCK
-========================= */
+/* =====================================================
+   FULLSCREEN STATE
+===================================================== */
 
-function updateTime() {
+let fullscreenActive = false;
 
-  document
-    .getElementById("time")
-    .textContent =
-      new Date()
-      .toLocaleTimeString();
+
+/* =====================================================
+   ENTER FULLSCREEN
+===================================================== */
+
+async function enterCameraFullscreen() {
+
+  fullscreenActive = true;
+
+  document.body.classList.add(
+    "camera-is-fullscreen"
+  );
+
+  cameraWrapper.classList.add(
+    "real-fullscreen"
+  );
+
+
+  /*
+    Try browser fullscreen.
+    If Android Chrome allows it,
+    the browser itself goes fullscreen.
+  */
+
+  try {
+
+    if (
+      cameraWrapper.requestFullscreen
+    ) {
+
+      await cameraWrapper.requestFullscreen();
+
+    } else if (
+      cameraWrapper.webkitRequestFullscreen
+    ) {
+
+      cameraWrapper.webkitRequestFullscreen();
+
+    }
+
+  } catch (error) {
+
+    /*
+      CSS fullscreen fallback
+      remains active.
+    */
+
+    console.log(
+      "Browser fullscreen unavailable. Using fallback."
+    );
+
+  }
+
+
+  /* Try landscape orientation */
+
+  try {
+
+    if (
+      screen.orientation &&
+      screen.orientation.lock
+    ) {
+
+      await screen.orientation.lock(
+        "landscape"
+      );
+
+    }
+
+  } catch (error) {
+
+    /*
+      Android Chrome may block
+      orientation lock.
+    */
+
+    console.log(
+      "Landscape lock unavailable."
+    );
+
+  }
+
+
+  fullscreenButton.textContent =
+    "✕";
 
 }
 
-updateTime();
 
-setInterval(
-  updateTime,
-  1000
+/* =====================================================
+   EXIT FULLSCREEN
+===================================================== */
+
+async function exitCameraFullscreen() {
+
+  fullscreenActive = false;
+
+  document.body.classList.remove(
+    "camera-is-fullscreen"
+  );
+
+  cameraWrapper.classList.remove(
+    "real-fullscreen"
+  );
+
+
+  /* Browser fullscreen exit */
+
+  try {
+
+    if (
+      document.fullscreenElement
+    ) {
+
+      await document.exitFullscreen();
+
+    } else if (
+      document.webkitFullscreenElement &&
+      document.webkitExitFullscreen
+    ) {
+
+      document.webkitExitFullscreen();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Fullscreen exit error."
+    );
+
+  }
+
+
+  /* Unlock orientation */
+
+  try {
+
+    if (
+      screen.orientation &&
+      screen.orientation.unlock
+    ) {
+
+      screen.orientation.unlock();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Orientation unlock unavailable."
+    );
+
+  }
+
+
+  fullscreenButton.textContent =
+    "⛶";
+
+}
+
+
+/* =====================================================
+   FULLSCREEN BUTTON
+===================================================== */
+
+fullscreenButton.addEventListener(
+  "click",
+  async function(event) {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+
+    if (fullscreenActive) {
+
+      await exitCameraFullscreen();
+
+    } else {
+
+      await enterCameraFullscreen();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ESC / BACK FROM BROWSER FULLSCREEN
+===================================================== */
+
+function browserFullscreenChanged() {
+
+  const browserFullscreen =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement;
+
+
+  /*
+    If browser fullscreen ended,
+    remove our CSS fallback too.
+  */
+
+  if (
+    !browserFullscreen &&
+    fullscreenActive
+  ) {
+
+    fullscreenActive = false;
+
+    document.body.classList.remove(
+      "camera-is-fullscreen"
+    );
+
+    cameraWrapper.classList.remove(
+      "real-fullscreen"
+    );
+
+    fullscreenButton.textContent =
+      "⛶";
+
+  }
+
+}
+
+
+document.addEventListener(
+  "fullscreenchange",
+  browserFullscreenChanged
+);
+
+document.addEventListener(
+  "webkitfullscreenchange",
+  browserFullscreenChanged
+);
+
+
+/* =====================================================
+   DOUBLE TAP CAMERA = FULLSCREEN
+===================================================== */
+
+let lastTap = 0;
+
+cameraWrapper.addEventListener(
+  "touchend",
+  function(event) {
+
+    const now =
+      Date.now();
+
+    if (
+      now - lastTap < 350
+    ) {
+
+      event.preventDefault();
+
+      if (fullscreenActive) {
+
+        exitCameraFullscreen();
+
+      } else {
+
+        enterCameraFullscreen();
+
+      }
+
+    }
+
+    lastTap = now;
+
+  },
+  {
+    passive: false
+  }
 );
 
 </script>
