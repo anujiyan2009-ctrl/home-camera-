@@ -1,16 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Home Camera</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home CCTV</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: white;
+}
+
+.header {
+  padding: 20px;
+  background: #111b2e;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.header p {
+  margin: 7px 0 0;
+  color: #aebbd0;
+}
+
+.container {
+  padding: 16px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.camera-card {
+  background: #111b2e;
+  border-radius: 18px;
+  padding: 12px;
+}
+
+.camera-screen {
+  height: 300px;
+  background: #05080e;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #8794a8;
+}
+
+.camera-screen span {
+  font-size: 45px;
+  display: block;
+}
+
+.camera-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 4px 4px;
+}
+
+.online {
+  color: #38e68c;
+}
+
+.status {
+  margin-top: 15px;
+  padding: 15px;
+  background: #111b2e;
+  border-radius: 14px;
+}
+
+.status strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.footer {
+  text-align: center;
+  color: #66758b;
+  margin-top: 25px;
+  font-size: 13px;
+}
+</style>
 </head>
 
 <body>
-  <h1>🏠 Home Camera</h1>
 
-  <div id="cameraBox">
-    <p>📹 CCTV Camera</p>
-    <p id="status">Waiting for camera...</p>
+<div class="header">
+  <h1>🏠 Home CCTV</h1>
+  <p>Security Camera Dashboard</p>
+</div>
+
+<div class="container">
+
+  <div class="camera-card">
+
+    <div class="camera-screen">
+      <div>
+        <span>📹</span>
+        <div>Camera Offline</div>
+        <small>Waiting for CCTV connection...</small>
+      </div>
+    </div>
+
+    <div class="camera-info">
+      <div>Camera 01</div>
+      <div class="online">● System Ready</div>
+    </div>
+
   </div>
+
+  <div class="status">
+    <strong>👤 Face Detection</strong>
+    <div id="faceStatus">Waiting for camera...</div>
+  </div>
+
+  <div class="status">
+    <strong>🕐 Current Time</strong>
+    <div id="time">--:--:--</div>
+  </div>
+
+  <div class="footer">
+    Home CCTV • Personal Security Dashboard
+  </div>
+
+</div>
+
+<script>
+function updateTime() {
+  const now = new Date();
+  document.getElementById("time").textContent =
+    now.toLocaleTimeString();
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+</script>
+
 </body>
 </html>
