@@ -22,9 +22,7 @@ body {
   overflow-x: hidden;
 }
 
-/* =========================
-   ANIMATED BACKGROUND
-   ========================= */
+/* BACKGROUND */
 
 .background {
   position: fixed;
@@ -72,9 +70,7 @@ body {
   100% { transform: translate(-40px,-160px) scale(.9); }
 }
 
-/* =========================
-   0 / 1 MATRIX
-   ========================= */
+/* 0 / 1 */
 
 .binary-bg {
   position: absolute;
@@ -110,9 +106,7 @@ body {
   }
 }
 
-/* =========================
-   MOVING GRID
-   ========================= */
+/* GRID */
 
 .grid {
   position: absolute;
@@ -188,9 +182,7 @@ body {
   }
 }
 
-/* =========================
-   LOGIN PAGE
-   ========================= */
+/* LOGIN */
 
 .login-page {
   position: relative;
@@ -245,9 +237,7 @@ body {
   }
 }
 
-/* =========================
-   PROFESSIONAL CCTV ICON
-   ========================= */
+/* CCTV CAMERA ICON */
 
 .cctv-icon {
   position: relative;
@@ -269,8 +259,6 @@ body {
     transform: translateY(-5px);
   }
 }
-
-/* Camera body */
 
 .camera-body {
   position: absolute;
@@ -297,8 +285,6 @@ body {
     0 0 22px rgba(30,150,255,.35),
     inset 0 1px rgba(255,255,255,.15);
 }
-
-/* Camera lens */
 
 .camera-lens {
   position: absolute;
@@ -347,8 +333,6 @@ body {
     0 0 12px #168fff;
 }
 
-/* Camera red status light */
-
 .camera-light {
   position: absolute;
 
@@ -379,8 +363,6 @@ body {
   }
 }
 
-/* Camera mounting arm */
-
 .camera-arm {
   position: absolute;
 
@@ -397,8 +379,6 @@ body {
   border:
     1px solid rgba(100,180,255,.35);
 }
-
-/* Camera base */
 
 .camera-base {
   position: absolute;
@@ -417,9 +397,7 @@ body {
     1px solid rgba(100,180,255,.35);
 }
 
-/* =========================
-   LOGIN TEXT
-   ========================= */
+/* LOGIN TEXT */
 
 .login-card h1 {
   margin: 0;
@@ -609,9 +587,7 @@ body {
     rgba(77,166,255,.6);
 }
 
-/* =========================
-   DASHBOARD
-   ========================= */
+/* DASHBOARD */
 
 .hidden {
   display: none !important;
@@ -688,8 +664,6 @@ body {
 
   padding: 18px;
 }
-
-/* CAMERA */
 
 .camera-card,
 .status-card {
@@ -873,9 +847,7 @@ body {
 </div>
 
 
-<!-- =========================
-     LOGIN
-     ========================= -->
+<!-- LOGIN -->
 
 <div
   id="loginPage"
@@ -885,14 +857,12 @@ body {
     id="loginCard"
     class="login-card">
 
-    <!-- PROFESSIONAL CCTV CAMERA ICON -->
+    <!-- CCTV ICON -->
 
     <div class="cctv-icon">
 
       <div class="camera-body">
-
         <div class="camera-light"></div>
-
       </div>
 
       <div class="camera-lens"></div>
@@ -937,8 +907,6 @@ body {
     </div>
 
 
-    <!-- LOGIN BUTTON -->
-
     <button
       class="login-button"
       onclick="login()">
@@ -965,9 +933,7 @@ body {
 </div>
 
 
-<!-- =========================
-     DASHBOARD
-     ========================= -->
+<!-- DASHBOARD -->
 
 <div
   id="dashboard"
@@ -1078,9 +1044,7 @@ body {
 
 <script>
 
-/* =========================
-   0 / 1 MATRIX GENERATOR
-   ========================= */
+/* MATRIX 0 / 1 */
 
 const binaryBg =
   document.getElementById("binaryBg");
@@ -1125,12 +1089,10 @@ for (let i = 0; i < 40; i++) {
 }
 
 
-/* =========================
-   PASSWORD
-   ========================= */
+/* PASSWORD */
 
 const PASSWORD =
-  "ANU12345@";
+  "ANU1234@";
 
 
 /* LOGIN */
