@@ -2,660 +2,2121 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Anu Home CCTV</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
+
+<meta name="theme-color" content="#000000">
+
+<title>Home CCTV</title>
+
+<!-- Face detection library -->
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:#02050a;color:#fff;font-family:Arial,sans-serif}
-button{font-family:inherit;cursor:pointer}
-.hidden{display:none!important}
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* LOGIN */
-.login{
- min-height:100vh;display:flex;align-items:center;justify-content:center;
- position:relative;overflow:hidden;background:#02050a;padding:20px
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #000;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
 }
-.matrix{position:absolute;inset:0;overflow:hidden;opacity:.2}
-.num{
- position:absolute;top:-500px;color:#20a8ff;font:14px monospace;
- line-height:22px;text-shadow:0 0 8px #168fff;
- animation:fall linear infinite
-}
-@keyframes fall{to{transform:translateY(120vh)}}
 
-.glow1,.glow2{position:absolute;border-radius:50%;filter:blur(110px);opacity:.2}
-.glow1{width:400px;height:400px;background:#087cff;left:-160px;top:-120px}
-.glow2{width:400px;height:400px;background:#702cff;right:-160px;bottom:-140px}
+body {
+  overflow-x: hidden;
+}
 
-.card{
- position:relative;z-index:5;width:100%;max-width:410px;padding:35px 27px;
- text-align:center;border:1px solid #ffffff22;border-radius:28px;
- background:#07101dcc;backdrop-filter:blur(25px);
- box-shadow:0 30px 80px #000b;animation:appear .7s ease
+.hidden {
+  display: none !important;
 }
-@keyframes appear{from{opacity:0;transform:translateY(30px) scale(.96)}
-to{opacity:1;transform:none}}
 
-.cctv{font-size:70px;margin-bottom:8px}
-.card h1{margin:0;font-size:29px;letter-spacing:2px}
-.sub{color:#8996aa;margin:9px 0 28px}
 
-.pass{width:100%;height:55px;padding:0 16px;border-radius:15px;
- border:1px solid #ffffff22;background:#0008;color:white;font-size:16px;outline:0}
-.pass:focus{border-color:#329dff;box-shadow:0 0 20px #168fff33}
+/* =====================================================
+   LOGIN
+===================================================== */
 
-.loginBtn{
- width:100%;height:55px;margin-top:18px;border:0;border-radius:15px;
- background:linear-gradient(135deg,#fff,#dce8f8);color:#07101e;
- font-weight:bold;font-size:16px
-}
-#error{height:22px;margin-top:12px;color:#ff6577;font-size:14px}
-.created{margin-top:20px;color:#718096;font-size:12px;letter-spacing:1px}
-.created b{color:#4da6ff}
+.login-page {
+  position: relative;
+  min-height: 100vh;
 
-/* DASHBOARD */
-.dashboard{min-height:100vh;background:#000}
-.topbar{
- height:62px;padding:0 16px;display:flex;align-items:center;
- justify-content:space-between;background:#07101a;border-bottom:1px solid #ffffff12
-}
-.title{font-size:19px;font-weight:bold}
-.logout{border:1px solid #ffffff22;background:#101b27;color:white;border-radius:10px;padding:9px 13px}
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-.cameras{
- display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px
-}
-.camera{
- position:relative;background:#050505;border:1px solid #ffffff12;
- border-radius:15px;overflow:hidden;min-height:260px
-}
-.camera:last-child{grid-column:1/-1;min-height:330px}
+  padding: 20px;
+  overflow: hidden;
 
-.video{
- width:100%;height:100%;min-height:260px;display:block;object-fit:cover;background:#000
+  background: #02060b;
 }
-.camera:last-child .video{min-height:330px}
 
-.overlay{
- position:absolute;inset:0;pointer-events:none
+.login-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
-.label{
- position:absolute;left:10px;top:10px;z-index:3;
- padding:7px 10px;border-radius:9px;background:#000b;
- font-size:12px;font-weight:bold
-}
-.status{
- position:absolute;right:10px;top:10px;z-index:3;
- padding:7px 10px;border-radius:9px;background:#000b;font-size:12px
-}
-.status.live{color:#00ff70}
-.status.off{color:#ff6474}
 
-.controls{
- position:absolute;left:0;right:0;bottom:0;z-index:5;
- padding:12px;background:linear-gradient(transparent,#000d);
- display:flex;gap:8px
-}
-.camBtn,.fullBtn{
- border:1px solid #ffffff22;background:#000b;color:white;
- border-radius:10px;padding:9px 12px
-}
-.fullBtn{margin-left:auto;font-size:18px}
+.blue-glow {
+  position: absolute;
 
-.info{
- padding:10px;background:#07101a;border-top:1px solid #ffffff0d;
- display:flex;justify-content:space-between;font-size:13px;color:#aab6c8
-}
-.count{color:#00ff70;font-weight:bold}
+  width: 400px;
+  height: 400px;
 
-.gallery{
- padding:15px;background:#060b11;border-top:1px solid #ffffff10
-}
-.gallery h2{font-size:17px;margin:0 0 12px}
-.photos{display:flex;gap:10px;overflow-x:auto}
-.photos img{width:120px;height:80px;object-fit:cover;border-radius:9px;border:1px solid #ffffff22}
+  left: -150px;
+  top: -120px;
 
-/* fullscreen */
-.fullscreen{
- position:fixed!important;inset:0!important;width:100vw!important;
- height:100vh!important;z-index:99999!important;border-radius:0!important
-}
-.fullscreen .video{width:100vw;height:100vh;min-height:100vh;object-fit:contain}
-.fullscreen .overlay{width:100vw;height:100vh}
+  border-radius: 50%;
 
-@media(max-width:600px){
- .cameras{grid-template-columns:1fr}
- .camera,.camera:last-child{grid-column:auto;min-height:300px}
- .video,.camera:last-child .video{min-height:300px}
+  background: #087cff;
+  filter: blur(110px);
+  opacity: .23;
+
+  animation: blueMove 10s ease-in-out infinite alternate;
+}
+
+@keyframes blueMove {
+  from {
+    transform: translate(0,0) scale(1);
+  }
+
+  to {
+    transform: translate(170px,150px) scale(1.25);
+  }
+}
+
+.purple-glow {
+  position: absolute;
+
+  width: 400px;
+  height: 400px;
+
+  right: -150px;
+  bottom: -150px;
+
+  border-radius: 50%;
+
+  background: #762cff;
+  filter: blur(110px);
+  opacity: .18;
+
+  animation: purpleMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes purpleMove {
+  from {
+    transform: translate(0,0) scale(1);
+  }
+
+  to {
+    transform: translate(-150px,-130px) scale(1.25);
+  }
+}
+
+.matrix {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: .22;
+}
+
+.matrix-column {
+  position: absolute;
+
+  top: -600px;
+
+  color: #21a9ff;
+
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 22px;
+
+  white-space: nowrap;
+
+  text-shadow: 0 0 8px #168fff;
+
+  animation: matrixFall linear infinite;
+}
+
+@keyframes matrixFall {
+  from {
+    transform: translateY(-600px);
+  }
+
+  to {
+    transform: translateY(120vh);
+  }
+}
+
+.login-grid {
+  position: absolute;
+  inset: -100px;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 45px 45px;
+
+  animation: gridMove 12s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    transform: translate(0,0);
+  }
+
+  to {
+    transform: translate(45px,45px);
+  }
+}
+
+.login-scan {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: -5px;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #3faaff,
+      transparent
+    );
+
+  box-shadow: 0 0 25px #168fff;
+
+  animation: scanMove 7s linear infinite;
+}
+
+@keyframes scanMove {
+  0% {
+    top: -5px;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+
+/* =====================================================
+   LOGIN CARD
+===================================================== */
+
+.login-card {
+  position: relative;
+  z-index: 10;
+
+  width: 100%;
+  max-width: 410px;
+
+  padding: 35px 27px;
+
+  border-radius: 28px;
+
+  background: rgba(5,12,22,.78);
+
+  border: 1px solid rgba(255,255,255,.16);
+
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.7);
+
+  text-align: center;
+
+  animation: cardAppear .7s ease;
+}
+
+@keyframes cardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(35px) scale(.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+/* CCTV ICON */
+
+.cctv-icon {
+  position: relative;
+
+  width: 105px;
+  height: 90px;
+
+  margin: 0 auto 15px;
+}
+
+.camera-body {
+  position: absolute;
+
+  left: 5px;
+  top: 23px;
+
+  width: 70px;
+  height: 43px;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #33475c,
+      #0b1420
+    );
+
+  border: 1px solid rgba(90,180,255,.65);
+
+  box-shadow:
+    0 0 25px rgba(30,150,255,.4);
+}
+
+.camera-lens {
+  position: absolute;
+
+  left: 70px;
+  top: 29px;
+
+  width: 32px;
+  height: 29px;
+
+  border-radius: 8px;
+
+  background: #03080e;
+
+  border: 1px solid rgba(80,170,255,.7);
+}
+
+.camera-lens::after {
+  content: "";
+
+  position: absolute;
+
+  left: 8px;
+  top: 7px;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #020912;
+
+  border: 2px solid #42adff;
+
+  box-shadow: 0 0 12px #168fff;
+}
+
+.camera-light {
+  position: absolute;
+
+  left: 14px;
+  top: 10px;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #ff3658;
+
+  box-shadow: 0 0 12px #ff3658;
+
+  animation: cameraBlink 1.5s infinite;
+}
+
+@keyframes cameraBlink {
+  0%,45% {
+    opacity: 1;
+  }
+
+  50%,100% {
+    opacity: .25;
+  }
+}
+
+.camera-arm {
+  position: absolute;
+
+  left: 28px;
+  top: 65px;
+
+  width: 8px;
+  height: 20px;
+
+  border-radius: 5px;
+
+  background: #24384c;
+}
+
+.camera-base {
+  position: absolute;
+
+  left: 15px;
+  top: 83px;
+
+  width: 36px;
+  height: 7px;
+
+  border-radius: 6px;
+
+  background: #172536;
+}
+
+.login-card h1 {
+  margin: 0;
+
+  font-size: 29px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  margin: 9px 0 28px;
+  color: #8996aa;
+}
+
+.password-box {
+  position: relative;
+  width: 100%;
+}
+
+.password-box input {
+  width: 100%;
+  height: 55px;
+
+  padding: 0 52px 0 17px;
+
+  border-radius: 15px;
+
+  border: 1px solid rgba(255,255,255,.14);
+
+  outline: none;
+
+  background: rgba(0,0,0,.38);
+
+  color: white;
+
+  font-size: 16px;
+}
+
+.password-box input:focus {
+  border-color: #329dff;
+
+  box-shadow:
+    0 0 20px rgba(30,130,255,.2);
+}
+
+.password-box input::placeholder {
+  color: #68758a;
+}
+
+.show-password {
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+
+  color: #aab6c8;
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+.login-button {
+  width: 100%;
+  height: 55px;
+
+  margin-top: 18px;
+
+  border: none;
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #dce8f8
+    );
+
+  color: #07101e;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+#error {
+  min-height: 22px;
+
+  margin-top: 14px;
+
+  color: #ff6677;
+
+  font-size: 14px;
+}
+
+.security {
+  margin-top: 20px;
+
+  color: #65748a;
+
+  font-size: 12px;
+}
+
+.created-by {
+  margin-top: 12px;
+
+  color: #718096;
+
+  font-size: 12px;
+
+  letter-spacing: 1px;
+}
+
+.created-by span {
+  color: #4da6ff;
+  font-weight: bold;
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+.dashboard {
+  width: 100%;
+  min-height: 100vh;
+
+  background: #000;
+  color: white;
+}
+
+
+/* CAMERA AREA */
+
+.camera-wrapper {
+  position: relative;
+
+  width: 100%;
+  height: 78vh;
+
+  min-height: 400px;
+
+  background: #000;
+
+  overflow: hidden;
+}
+
+
+/* VIDEO */
+
+#phoneCamera {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  background: #000;
+
+  display: none;
+
+  transform: scaleX(1);
+}
+
+
+/* FACE CANVAS */
+
+#faceCanvas {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+
+  z-index: 10;
+
+  display: none;
+}
+
+
+/* PLACEHOLDER */
+
+.camera-placeholder {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  text-align: center;
+
+  background: #000;
+
+  z-index: 5;
+}
+
+.camera-icon {
+  font-size: 70px;
+  margin-bottom: 15px;
+}
+
+.camera-title {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.camera-subtitle {
+  margin-top: 8px;
+
+  color: #718096;
+
+  font-size: 14px;
+}
+
+.camera-error {
+  max-width: 320px;
+
+  margin-top: 15px;
+
+  color: #ff6677;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+.camera-controls {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  z-index: 30;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0,0,0,.85)
+    );
+}
+
+.camera-button {
+  min-width: 145px;
+  height: 48px;
+
+  padding: 0 17px;
+
+  border: 1px solid rgba(255,255,255,.22);
+
+  border-radius: 13px;
+
+  background: rgba(0,0,0,.65);
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.camera-button:active {
+  transform: scale(.95);
+}
+
+.fullscreen-button {
+  width: 54px;
+  height: 54px;
+
+  border-radius: 15px;
+
+  border: 1px solid rgba(255,255,255,.3);
+
+  background: rgba(0,0,0,.72);
+
+  color: white;
+
+  font-size: 26px;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.fullscreen-button:active {
+  transform: scale(.92);
+}
+
+
+/* =====================================================
+   LIVE BADGE
+===================================================== */
+
+.live-badge {
+  position: absolute;
+
+  left: 15px;
+  top: 15px;
+
+  z-index: 30;
+
+  display: none;
+
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 11px;
+
+  border-radius: 10px;
+
+  background: rgba(0,0,0,.65);
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #ff304f;
+
+  box-shadow: 0 0 10px #ff304f;
+
+  animation: liveBlink 1s infinite;
+}
+
+@keyframes liveBlink {
+  0%,100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .3;
+  }
+}
+
+
+/* =====================================================
+   FULLSCREEN
+===================================================== */
+
+.camera-wrapper.real-fullscreen {
+  position: fixed !important;
+
+  left: 0 !important;
+  top: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  min-height: 100vh !important;
+
+  z-index: 999999 !important;
+
+  background: #000 !important;
+}
+
+.camera-wrapper.real-fullscreen #phoneCamera {
+  width: 100vw !important;
+  height: 100vh !important;
+
+  object-fit: contain;
+}
+
+.camera-wrapper.real-fullscreen #faceCanvas {
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+.camera-wrapper.real-fullscreen
+.camera-placeholder {
+  width: 100vw;
+  height: 100vh;
+}
+
+
+/* =====================================================
+   FACE PANEL
+===================================================== */
+
+.face-panel {
+  width: 100%;
+
+  padding: 20px;
+
+  background: #09131f;
+
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.face-title {
+  font-size: 18px;
+
+  font-weight: bold;
+
+  margin-bottom: 14px;
+}
+
+.face-row {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid rgba(255,255,255,.06);
+
+  color: #aab6c8;
+}
+
+.face-row:last-child {
+  border-bottom: none;
+}
+
+.face-value {
+  color: white;
+  font-weight: bold;
+}
+
+
+/* Hide panel in fullscreen */
+
+body.camera-is-fullscreen
+.face-panel {
+  display: none !important;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .camera-wrapper {
+    height: 76vh;
+    min-height: 350px;
+  }
+
+  .camera-button {
+    min-width: 135px;
+  }
+
+}
+
+
+/* LANDSCAPE */
+
+@media
+(orientation: landscape)
+and (max-height: 600px) {
+
+  .camera-wrapper {
+    height: 100vh;
+    min-height: 100vh;
+  }
+
 }
 </style>
 </head>
 
+
 <body>
 
-<!-- LOGIN -->
-<section id="loginPage" class="login">
- <div class="glow1"></div>
- <div class="glow2"></div>
- <div id="matrix" class="matrix"></div>
 
- <div class="card">
-   <div class="cctv">📹</div>
-   <h1>HOME CCTV</h1>
-   <div class="sub">Secure Security Dashboard</div>
+<!-- =====================================================
+     LOGIN
+===================================================== -->
 
-   <input id="password" class="pass" type="password"
-          placeholder="Enter security password">
+<div id="loginPage" class="login-page">
 
-   <button id="loginBtn" class="loginBtn">🔓 Unlock Dashboard</button>
+  <div class="login-background">
 
-   <div id="error"></div>
-   <div class="created">Created by <b>Anu</b></div>
- </div>
-</section>
+    <div class="blue-glow"></div>
 
+    <div class="purple-glow"></div>
 
-<!-- DASHBOARD -->
-<section id="dashboard" class="dashboard hidden">
+    <div id="matrix" class="matrix"></div>
 
- <div class="topbar">
-   <div class="title">📹 ANU HOME CCTV</div>
-   <button id="logout" class="logout">Logout</button>
- </div>
+    <div class="login-grid"></div>
 
- <div class="cameras">
+    <div class="login-scan"></div>
 
-   <!-- CAMERA 1 -->
-   <div class="camera" id="cameraBox1">
-     <div class="label">CAMERA 1</div>
-     <div class="status off" id="status1">OFFLINE</div>
-     <video id="video1" class="video" autoplay muted playsinline></video>
-     <canvas id="canvas1" class="overlay"></canvas>
-
-     <div class="controls">
-       <button class="camBtn" onclick="startCamera(1)">📹 Start</button>
-       <button class="camBtn" onclick="stopCamera(1)">⏹ Stop</button>
-       <button class="fullBtn" onclick="fullCamera(1)">⛶</button>
-     </div>
-
-     <div class="info">
-       <span>Persons detected</span>
-       <span class="count" id="count1">0</span>
-     </div>
-   </div>
+  </div>
 
 
-   <!-- CAMERA 2 -->
-   <div class="camera" id="cameraBox2">
-     <div class="label">CAMERA 2</div>
-     <div class="status off" id="status2">OFFLINE</div>
-     <video id="video2" class="video" autoplay muted playsinline></video>
-     <canvas id="canvas2" class="overlay"></canvas>
-
-     <div class="controls">
-       <button class="camBtn" onclick="startCamera(2)">📹 Start</button>
-       <button class="camBtn" onclick="stopCamera(2)">⏹ Stop</button>
-       <button class="fullBtn" onclick="fullCamera(2)">⛶</button>
-     </div>
-
-     <div class="info">
-       <span>Persons detected</span>
-       <span class="count" id="count2">0</span>
-     </div>
-   </div>
+  <div class="login-card">
 
 
-   <!-- CAMERA 3 -->
-   <div class="camera" id="cameraBox3">
-     <div class="label">CAMERA 3</div>
-     <div class="status off" id="status3">OFFLINE</div>
-     <video id="video3" class="video" autoplay muted playsinline></video>
-     <canvas id="canvas3" class="overlay"></canvas>
+    <div class="cctv-icon">
 
-     <div class="controls">
-       <button class="camBtn" onclick="startCamera(3)">📹 Start</button>
-       <button class="camBtn" onclick="stopCamera(3)">⏹ Stop</button>
-       <button class="fullBtn" onclick="fullCamera(3)">⛶</button>
-     </div>
+      <div class="camera-body">
+        <div class="camera-light"></div>
+      </div>
 
-     <div class="info">
-       <span>Persons detected</span>
-       <span class="count" id="count3">0</span>
-     </div>
-   </div>
+      <div class="camera-lens"></div>
 
- </div>
+      <div class="camera-arm"></div>
+
+      <div class="camera-base"></div>
+
+    </div>
 
 
- <!-- CAPTURED PHOTOS -->
- <div class="gallery">
-   <h2>📸 Captured Persons</h2>
-   <div id="photos" class="photos"></div>
- </div>
+    <h1>HOME CCTV</h1>
 
-</section>
+    <p class="subtitle">
+      Secure Security Dashboard
+    </p>
+
+
+    <div class="password-box">
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter security password"
+        autocomplete="off"
+      >
+
+      <button
+        id="eyeButton"
+        class="show-password"
+        type="button">
+
+        👁️
+
+      </button>
+
+    </div>
+
+
+    <button
+      id="loginButton"
+      class="login-button"
+      type="button">
+
+      🔓 Unlock Dashboard
+
+    </button>
+
+
+    <div id="error"></div>
+
+
+    <div class="security">
+      🔒 HOME SECURITY SYSTEM
+    </div>
+
+
+    <div class="created-by">
+      Created by <span>Anu</span>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     DASHBOARD
+===================================================== -->
+
+<div id="dashboard" class="dashboard hidden">
+
+
+  <div id="cameraWrapper" class="camera-wrapper">
+
+
+    <!-- PHONE CAMERA -->
+
+    <video
+      id="phoneCamera"
+      autoplay
+      playsinline
+      muted>
+    </video>
+
+
+    <!-- FACE BOX CANVAS -->
+
+    <canvas id="faceCanvas"></canvas>
+
+
+    <!-- PLACEHOLDER -->
+
+    <div
+      id="cameraPlaceholder"
+      class="camera-placeholder">
+
+      <div class="camera-icon">
+        📱
+      </div>
+
+      <div class="camera-title">
+        Phone Camera
+      </div>
+
+      <div class="camera-subtitle">
+        Press "Start Camera"
+      </div>
+
+      <div
+        id="cameraError"
+        class="camera-error">
+      </div>
+
+    </div>
+
+
+    <!-- LIVE -->
+
+    <div
+      id="liveBadge"
+      class="live-badge">
+
+      <span class="live-dot"></span>
+
+      LIVE
+
+    </div>
+
+
+    <!-- CONTROLS -->
+
+    <div class="camera-controls">
+
+      <button
+        id="cameraButton"
+        class="camera-button"
+        type="button">
+
+        📹 Start Camera
+
+      </button>
+
+
+      <button
+        id="fullscreenButton"
+        class="fullscreen-button"
+        type="button">
+
+        ⛶
+
+      </button>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- FACE STATUS -->
+
+  <div class="face-panel">
+
+    <div class="face-title">
+      👤 Face Detection
+    </div>
+
+
+    <div class="face-row">
+
+      <span>
+        Face detected
+      </span>
+
+      <span
+        id="faceStatus"
+        class="face-value">
+
+        No
+
+      </span>
+
+    </div>
+
+
+    <div class="face-row">
+
+      <span>
+        Face count
+      </span>
+
+      <span
+        id="faceCount"
+        class="face-value">
+
+        0
+
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
 
 
 <script>
 
-/* =========================
-   LOGIN
-========================= */
+/* =====================================================
+   PASSWORD
+===================================================== */
 
 const PASSWORD = "ANU1234@";
 
-const loginPage = document.getElementById("loginPage");
-const dashboard = document.getElementById("dashboard");
-const password = document.getElementById("password");
-const error = document.getElementById("error");
 
-document.getElementById("loginBtn").onclick = login;
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-password.addEventListener("keydown", e => {
- if(e.key === "Enter") login();
-});
+const loginPage =
+  document.getElementById("loginPage");
 
-function login(){
- if(password.value === PASSWORD){
-   error.textContent = "";
-   loginPage.classList.add("hidden");
-   dashboard.classList.remove("hidden");
- }else{
-   error.textContent = "❌ Incorrect password";
- }
+const dashboard =
+  document.getElementById("dashboard");
+
+const passwordInput =
+  document.getElementById("password");
+
+const errorMessage =
+  document.getElementById("error");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const eyeButton =
+  document.getElementById("eyeButton");
+
+const cameraWrapper =
+  document.getElementById("cameraWrapper");
+
+const cameraButton =
+  document.getElementById("cameraButton");
+
+const fullscreenButton =
+  document.getElementById("fullscreenButton");
+
+const phoneCamera =
+  document.getElementById("phoneCamera");
+
+const cameraPlaceholder =
+  document.getElementById("cameraPlaceholder");
+
+const cameraError =
+  document.getElementById("cameraError");
+
+const liveBadge =
+  document.getElementById("liveBadge");
+
+const faceCanvas =
+  document.getElementById("faceCanvas");
+
+const faceStatus =
+  document.getElementById("faceStatus");
+
+const faceCount =
+  document.getElementById("faceCount");
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+function login() {
+
+  if (passwordInput.value === PASSWORD) {
+
+    errorMessage.textContent = "";
+
+    loginPage.classList.add("hidden");
+
+    dashboard.classList.remove("hidden");
+
+  } else {
+
+    errorMessage.textContent =
+      "❌ Incorrect password";
+
+  }
+
 }
 
-document.getElementById("logout").onclick = () => {
- stopCamera(1);
- stopCamera(2);
- stopCamera(3);
- dashboard.classList.add("hidden");
- loginPage.classList.remove("hidden");
- password.value = "";
-};
+loginButton.addEventListener(
+  "click",
+  login
+);
 
 
-/* =========================
-   MATRIX 0 / 1
-========================= */
+passwordInput.addEventListener(
+  "keydown",
+  function(event) {
 
-const matrix = document.getElementById("matrix");
+    if (event.key === "Enter") {
+      login();
+    }
 
-for(let i=0;i<45;i++){
- const d=document.createElement("div");
- d.className="num";
- d.style.left=Math.random()*100+"%";
- d.style.animationDuration=(4+Math.random()*8)+"s";
- d.style.animationDelay=(-Math.random()*10)+"s";
+  }
+);
 
- let s="";
- for(let j=0;j<35;j++){
-   s += Math.random()>.5 ? "1<br>" : "0<br>";
- }
- d.innerHTML=s;
- matrix.appendChild(d);
+
+/* =====================================================
+   SHOW PASSWORD
+===================================================== */
+
+eyeButton.addEventListener(
+  "click",
+  function() {
+
+    if (passwordInput.type === "password") {
+
+      passwordInput.type = "text";
+
+      eyeButton.textContent = "🙈";
+
+    } else {
+
+      passwordInput.type = "password";
+
+      eyeButton.textContent = "👁️";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   MATRIX
+===================================================== */
+
+const matrix =
+  document.getElementById("matrix");
+
+for (let i = 0; i < 40; i++) {
+
+  const column =
+    document.createElement("div");
+
+  column.className =
+    "matrix-column";
+
+  column.style.left =
+    Math.random() * 100 + "%";
+
+  column.style.animationDuration =
+    (4 + Math.random() * 8) + "s";
+
+  column.style.animationDelay =
+    (-Math.random() * 10) + "s";
+
+  let numbers = "";
+
+  for (let j = 0; j < 35; j++) {
+
+    numbers +=
+      Math.random() > .5
+      ? "1<br>"
+      : "0<br>";
+
+  }
+
+  column.innerHTML = numbers;
+
+  matrix.appendChild(column);
+
 }
 
 
-/* =========================
-   MODEL
-========================= */
+/* =====================================================
+   CAMERA VARIABLES
+===================================================== */
 
-let model = null;
-let modelLoading = false;
+let cameraStream = null;
 
-async function loadModel(){
+let detectionTimer = null;
 
- if(model) return true;
- if(modelLoading) return false;
+let modelsLoaded = false;
 
- modelLoading = true;
 
- try{
-   model = await cocoSsd.load();
-   console.log("Person detection model loaded");
-   return true;
- }catch(e){
-   console.error(e);
-   alert("Person detection model could not load. Check internet.");
-   return false;
- }finally{
-   modelLoading=false;
- }
+/* =====================================================
+   FACE MODEL URL
+===================================================== */
+
+const MODEL_URL =
+  "https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights";
+
+
+/* =====================================================
+   LOAD FACE MODELS
+===================================================== */
+
+async function loadFaceModels() {
+
+  if (modelsLoaded) {
+    return true;
+  }
+
+  try {
+
+    cameraError.textContent =
+      "Loading face detection...";
+
+    await faceapi.nets.tinyFaceDetector.loadFromUri(
+      MODEL_URL
+    );
+
+    modelsLoaded = true;
+
+    cameraError.textContent = "";
+
+    return true;
+
+  } catch (error) {
+
+    console.error(
+      "Face model error:",
+      error
+    );
+
+    cameraError.textContent =
+      "Face detection model failed to load. Check internet connection.";
+
+    return false;
+
+  }
+
 }
 
 
-/* =========================
-   CAMERA STORAGE
-========================= */
+/* =====================================================
+   RESIZE CANVAS
+===================================================== */
 
-const streams = {
- 1:null,
- 2:null,
- 3:null
-};
+function resizeFaceCanvas() {
 
-const timers = {
- 1:null,
- 2:null,
- 3:null
-};
+  if (!phoneCamera.videoWidth ||
+      !phoneCamera.videoHeight) {
+    return;
+  }
 
-const lastCapture = {
- 1:0,
- 2:0,
- 3:0
-};
+  faceCanvas.width =
+    phoneCamera.videoWidth;
 
+  faceCanvas.height =
+    phoneCamera.videoHeight;
 
-/* =========================
-   START CAMERA
-========================= */
-
-async function startCamera(id){
-
- const ok = await loadModel();
- if(!ok) return;
-
- if(streams[id]) return;
-
- try{
-
-   const stream =
-     await navigator.mediaDevices.getUserMedia({
-       video:{
-         facingMode:"environment",
-         width:{ideal:1280},
-         height:{ideal:720}
-       },
-       audio:false
-     });
-
-   streams[id]=stream;
-
-   const video=document.getElementById("video"+id);
-   const status=document.getElementById("status"+id);
-
-   video.srcObject=stream;
-   await video.play();
-
-   status.textContent="● LIVE";
-   status.className="status live";
-
-   video.onloadedmetadata=()=>{
-
-     const canvas=document.getElementById("canvas"+id);
-
-     canvas.width=video.videoWidth;
-     canvas.height=video.videoHeight;
-
-     runDetection(id);
-   };
-
- }catch(e){
-
-   console.error(e);
-
-   alert(
-     "Camera "+id+" could not start.\n\n"+
-     "Allow camera permission in Chrome."
-   );
- }
 }
 
 
-/* =========================
+/* =====================================================
+   DRAW FACE BOXES
+===================================================== */
+
+function drawFaceBoxes(detections) {
+
+  const ctx =
+    faceCanvas.getContext("2d");
+
+  ctx.clearRect(
+    0,
+    0,
+    faceCanvas.width,
+    faceCanvas.height
+  );
+
+
+  /*
+    Draw green box around every face.
+  */
+
+  detections.forEach(
+    function(detection) {
+
+      const box =
+        detection.box;
+
+      ctx.strokeStyle =
+        "#00ff66";
+
+      ctx.lineWidth =
+        Math.max(
+          3,
+          faceCanvas.width / 450
+        );
+
+      ctx.shadowColor =
+        "#00ff66";
+
+      ctx.shadowBlur = 10;
+
+      ctx.strokeRect(
+        box.x,
+        box.y,
+        box.width,
+        box.height
+      );
+
+      ctx.shadowBlur = 0;
+
+
+      /*
+        Small label.
+      */
+
+      ctx.font =
+        Math.max(
+          14,
+          faceCanvas.width / 70
+        ) + "px Arial";
+
+      ctx.fillStyle =
+        "#00ff66";
+
+      ctx.fillText(
+        "FACE",
+        box.x,
+        Math.max(
+          18,
+          box.y - 7
+        )
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   DETECT FACES
+===================================================== */
+
+async function detectFaces() {
+
+  if (!cameraStream) {
+    return;
+  }
+
+  if (!modelsLoaded) {
+    return;
+  }
+
+  if (
+    phoneCamera.readyState <
+    2
+  ) {
+    return;
+  }
+
+
+  try {
+
+    const detections =
+      await faceapi.detectAllFaces(
+        phoneCamera,
+        new faceapi.TinyFaceDetectorOptions({
+          inputSize: 320,
+          scoreThreshold: 0.5
+        })
+      );
+
+
+    /*
+      Face count.
+    */
+
+    const count =
+      detections.length;
+
+    faceCount.textContent =
+      count;
+
+
+    /*
+      Status.
+    */
+
+    if (count > 0) {
+
+      faceStatus.textContent =
+        "Yes";
+
+      faceStatus.style.color =
+        "#00ff66";
+
+    } else {
+
+      faceStatus.textContent =
+        "No";
+
+      faceStatus.style.color =
+        "white";
+
+    }
+
+
+    /*
+      Green boxes.
+    */
+
+    drawFaceBoxes(
+      detections
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Detection error:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   START FACE DETECTION
+===================================================== */
+
+function startFaceDetection() {
+
+  resizeFaceCanvas();
+
+  faceCanvas.style.display =
+    "block";
+
+
+  /*
+    Run detection approximately
+    every 200 ms.
+  */
+
+  if (detectionTimer) {
+
+    clearInterval(
+      detectionTimer
+    );
+
+  }
+
+  detectionTimer =
+    setInterval(
+      detectFaces,
+      200
+    );
+
+}
+
+
+/* =====================================================
+   STOP FACE DETECTION
+===================================================== */
+
+function stopFaceDetection() {
+
+  if (detectionTimer) {
+
+    clearInterval(
+      detectionTimer
+    );
+
+    detectionTimer = null;
+
+  }
+
+  const ctx =
+    faceCanvas.getContext("2d");
+
+  ctx.clearRect(
+    0,
+    0,
+    faceCanvas.width,
+    faceCanvas.height
+  );
+
+  faceCanvas.style.display =
+    "none";
+
+  faceStatus.textContent =
+    "No";
+
+  faceStatus.style.color =
+    "white";
+
+  faceCount.textContent =
+    "0";
+
+}
+
+
+/* =====================================================
+   START PHONE CAMERA
+===================================================== */
+
+async function startPhoneCamera() {
+
+  cameraError.textContent = "";
+
+  const modelsOK =
+    await loadFaceModels();
+
+  if (!modelsOK) {
+    return;
+  }
+
+
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+
+    cameraError.textContent =
+      "Camera is not supported by this browser.";
+
+    return;
+
+  }
+
+
+  try {
+
+    cameraStream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+
+          facingMode: {
+            ideal: "environment"
+          },
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          }
+
+        },
+
+        audio: false
+
+      });
+
+
+    phoneCamera.srcObject =
+      cameraStream;
+
+
+    await phoneCamera.play();
+
+
+    phoneCamera.style.display =
+      "block";
+
+    cameraPlaceholder.style.display =
+      "none";
+
+    liveBadge.style.display =
+      "flex";
+
+    cameraButton.textContent =
+      "⏹ Stop Camera";
+
+
+    /*
+      Wait until video dimensions
+      are available.
+    */
+
+    if (
+      phoneCamera.readyState >= 2
+    ) {
+
+      resizeFaceCanvas();
+
+      startFaceDetection();
+
+    } else {
+
+      phoneCamera.addEventListener(
+        "loadedmetadata",
+        function() {
+
+          resizeFaceCanvas();
+
+          startFaceDetection();
+
+        },
+        {
+          once: true
+        }
+      );
+
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Camera error:",
+      error
+    );
+
+
+    if (
+      error.name ===
+      "NotAllowedError"
+    ) {
+
+      cameraError.textContent =
+        "Camera permission denied. Allow Camera permission in Chrome.";
+
+    } else if (
+      error.name ===
+      "NotFoundError"
+    ) {
+
+      cameraError.textContent =
+        "No camera was found on this device.";
+
+    } else {
+
+      cameraError.textContent =
+        "Could not start camera: " +
+        error.message;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
    STOP CAMERA
-========================= */
+===================================================== */
 
-function stopCamera(id){
+function stopPhoneCamera() {
 
- if(streams[id]){
-   streams[id].getTracks().forEach(t=>t.stop());
-   streams[id]=null;
- }
+  stopFaceDetection();
 
- if(timers[id]){
-   clearTimeout(timers[id]);
-   timers[id]=null;
- }
 
- const video=document.getElementById("video"+id);
- const canvas=document.getElementById("canvas"+id);
+  if (cameraStream) {
 
- video.srcObject=null;
+    cameraStream
+      .getTracks()
+      .forEach(
+        function(track) {
+          track.stop();
+        }
+      );
 
- const ctx=canvas.getContext("2d");
- ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
 
- document.getElementById("status"+id).textContent="OFFLINE";
- document.getElementById("status"+id).className="status off";
- document.getElementById("count"+id).textContent="0";
+  cameraStream = null;
+
+  phoneCamera.srcObject = null;
+
+  phoneCamera.style.display =
+    "none";
+
+  cameraPlaceholder.style.display =
+    "flex";
+
+  liveBadge.style.display =
+    "none";
+
+  cameraButton.textContent =
+    "📹 Start Camera";
+
 }
 
 
-/* =========================
-   PERSON DETECTION
-========================= */
+/* =====================================================
+   CAMERA BUTTON
+===================================================== */
 
-async function runDetection(id){
+cameraButton.addEventListener(
+  "click",
+  function() {
 
- if(!streams[id]) return;
+    if (cameraStream) {
 
- const video=document.getElementById("video"+id);
- const canvas=document.getElementById("canvas"+id);
- const ctx=canvas.getContext("2d");
+      stopPhoneCamera();
 
- if(
-   video.readyState < 2 ||
-   !video.videoWidth ||
-   !video.videoHeight
- ){
-   timers[id]=setTimeout(()=>runDetection(id),300);
-   return;
- }
+    } else {
 
- try{
+      startPhoneCamera();
 
-   const predictions =
-     await model.detect(video);
+    }
 
-   const persons =
-     predictions.filter(
-       p => p.class === "person" && p.score >= 0.55
-     );
-
-   document.getElementById("count"+id).textContent =
-     persons.length;
-
-   ctx.clearRect(
-     0,0,
-     canvas.width,
-     canvas.height
-   );
-
-   const sx=canvas.width/video.videoWidth;
-   const sy=canvas.height/video.videoHeight;
-
-   persons.forEach((p,index)=>{
-
-     const x=p.bbox[0]*sx;
-     const y=p.bbox[1]*sy;
-     const w=p.bbox[2]*sx;
-     const h=p.bbox[3]*sy;
-
-     /* GREEN FULL BODY BOX */
-     ctx.strokeStyle="#00ff66";
-     ctx.lineWidth=4;
-     ctx.shadowColor="#00ff66";
-     ctx.shadowBlur=10;
-
-     ctx.strokeRect(x,y,w,h);
-
-     ctx.shadowBlur=0;
-
-     /* LABEL */
-     ctx.font="bold 16px Arial";
-
-     const text =
-       "PERSON " +
-       Math.round(p.score*100) +
-       "%";
-
-     const tw=ctx.measureText(text).width;
-
-     ctx.fillStyle="#00ff66";
-     ctx.fillRect(
-       x,
-       Math.max(0,y-25),
-       tw+14,
-       25
-     );
-
-     ctx.fillStyle="#001b0a";
-     ctx.fillText(
-       text,
-       x+7,
-       Math.max(17,y-7)
-     );
-   });
+  }
+);
 
 
-   /*
-      Automatic snapshot.
-      One capture per camera every 5 seconds
-      while a person is detected.
-   */
-
-   if(persons.length > 0){
-
-     const now=Date.now();
-
-     if(now-lastCapture[id] > 5000){
-
-       capturePersonPhoto(
-         video,
-         id
-       );
-
-       lastCapture[id]=now;
-     }
-   }
-
- }catch(e){
-   console.error("Detection error:",e);
- }
-
- timers[id]=setTimeout(
-   ()=>runDetection(id),
-   250
- );
-}
-
-
-/* =========================
-   CAPTURE PHOTO
-========================= */
-
-function capturePersonPhoto(video,id){
-
- const c=document.createElement("canvas");
-
- c.width=video.videoWidth;
- c.height=video.videoHeight;
-
- const ctx=c.getContext("2d");
-
- ctx.drawImage(
-   video,
-   0,0,
-   c.width,
-   c.height
- );
-
- const image =
-   c.toDataURL("image/jpeg",0.85);
-
- const img=document.createElement("img");
-
- img.src=image;
- img.title="Camera "+id+" - "+new Date().toLocaleTimeString();
-
- document.getElementById("photos")
-   .prepend(img);
-
- /* Keep last 20 photos */
- const photos =
-   document.getElementById("photos");
-
- while(photos.children.length>20){
-   photos.removeChild(
-     photos.lastElementChild
-   );
- }
-}
-
-
-/* =========================
+/* =====================================================
    FULLSCREEN
-========================= */
+===================================================== */
 
-async function fullCamera(id){
+let fullscreenActive = false;
 
- const box =
-   document.getElementById("cameraBox"+id);
 
- try{
+async function enterCameraFullscreen() {
 
-   if(
-     document.fullscreenElement ||
-     document.webkitFullscreenElement
-   ){
+  fullscreenActive = true;
 
-     if(document.exitFullscreen)
-       await document.exitFullscreen();
+  document.body.classList.add(
+    "camera-is-fullscreen"
+  );
 
-     else if(document.webkitExitFullscreen)
-       document.webkitExitFullscreen();
+  cameraWrapper.classList.add(
+    "real-fullscreen"
+  );
 
-     box.classList.remove("fullscreen");
 
-   }else{
+  try {
 
-     box.classList.add("fullscreen");
+    if (
+      cameraWrapper.requestFullscreen
+    ) {
 
-     if(box.requestFullscreen)
-       await box.requestFullscreen();
+      await cameraWrapper.requestFullscreen();
 
-     else if(box.webkitRequestFullscreen)
-       box.webkitRequestFullscreen();
-   }
+    } else if (
+      cameraWrapper.webkitRequestFullscreen
+    ) {
 
- }catch(e){
+      cameraWrapper.webkitRequestFullscreen();
 
-   box.classList.toggle("fullscreen");
+    }
 
- }
+  } catch (error) {
+
+    console.log(
+      "Native fullscreen unavailable."
+    );
+
+  }
+
+
+  try {
+
+    if (
+      screen.orientation &&
+      screen.orientation.lock
+    ) {
+
+      await screen.orientation.lock(
+        "landscape"
+      );
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Landscape lock unavailable."
+    );
+
+  }
+
+
+  fullscreenButton.textContent =
+    "✕";
+
 }
 
 
-/* =========================
-   CLEANUP
-========================= */
+async function exitCameraFullscreen() {
+
+  fullscreenActive = false;
+
+  document.body.classList.remove(
+    "camera-is-fullscreen"
+  );
+
+  cameraWrapper.classList.remove(
+    "real-fullscreen"
+  );
+
+
+  try {
+
+    if (
+      document.fullscreenElement
+    ) {
+
+      await document.exitFullscreen();
+
+    } else if (
+      document.webkitFullscreenElement &&
+      document.webkitExitFullscreen
+    ) {
+
+      document.webkitExitFullscreen();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Fullscreen exit error."
+    );
+
+  }
+
+
+  try {
+
+    if (
+      screen.orientation &&
+      screen.orientation.unlock
+    ) {
+
+      screen.orientation.unlock();
+
+    }
+
+  } catch (error) {
+
+    console.log(
+      "Orientation unlock unavailable."
+    );
+
+  }
+
+
+  fullscreenButton.textContent =
+    "⛶";
+
+}
+
+
+/* =====================================================
+   FULLSCREEN BUTTON
+===================================================== */
+
+fullscreenButton.addEventListener(
+  "click",
+  async function(event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (fullscreenActive) {
+
+      await exitCameraFullscreen();
+
+    } else {
+
+      await enterCameraFullscreen();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   RESIZE
+===================================================== */
 
 window.addEventListener(
- "beforeunload",
- ()=>{
-   stopCamera(1);
-   stopCamera(2);
-   stopCamera(3);
- }
+  "resize",
+  function() {
+
+    if (cameraStream) {
+
+      resizeFaceCanvas();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   FULLSCREEN CHANGE
+===================================================== */
+
+function browserFullscreenChanged() {
+
+  const browserFullscreen =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement;
+
+
+  if (
+    !browserFullscreen &&
+    fullscreenActive
+  ) {
+
+    fullscreenActive = false;
+
+    document.body.classList.remove(
+      "camera-is-fullscreen"
+    );
+
+    cameraWrapper.classList.remove(
+      "real-fullscreen"
+    );
+
+    fullscreenButton.textContent =
+      "⛶";
+
+  }
+
+}
+
+document.addEventListener(
+  "fullscreenchange",
+  browserFullscreenChanged
+);
+
+document.addEventListener(
+  "webkitfullscreenchange",
+  browserFullscreenChanged
+);
+
+
+/* =====================================================
+   DOUBLE TAP = FULLSCREEN
+===================================================== */
+
+let lastTap = 0;
+
+cameraWrapper.addEventListener(
+  "touchend",
+  function(event) {
+
+    const now =
+      Date.now();
+
+    if (
+      now - lastTap < 350
+    ) {
+
+      event.preventDefault();
+
+      if (fullscreenActive) {
+
+        exitCameraFullscreen();
+
+      } else {
+
+        enterCameraFullscreen();
+
+      }
+
+    }
+
+    lastTap = now;
+
+  },
+  {
+    passive: false
+  }
+);
+
+
+/* =====================================================
+   CLEANUP
+===================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    stopPhoneCamera();
+
+  }
 );
 
 </script>
+
 </body>
 </html>
