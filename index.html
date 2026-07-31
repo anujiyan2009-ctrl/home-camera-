@@ -1,207 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-
-<title>Air Drawing</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-background:#000;
-overflow:hidden;
-font-family:Arial;
-}
-
-video{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-transform:scaleX(-1);
-z-index:1;
-}
-
-canvas{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:2;
-touch-action:none;
-}
-
-#toolbar{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-display:flex;
-gap:10px;
-z-index:5;
-background:rgba(0,0,0,.6);
-padding:10px;
-border-radius:20px;
-backdrop-filter:blur(10px);
-}
-
-.color{
-width:35px;
-height:35px;
-border-radius:50%;
-border:2px solid white;
-cursor:pointer;
-}
-
-button{
-height:40px;
-padding:0 15px;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-</style>
-</head>
-
-<body>
-
-<video id="video" autoplay playsinline></video>
-
-<canvas id="draw"></canvas>
-
-<div id="toolbar">
-
-<div class="color" data="#ff0000" style="background:red"></div>
-
-<div class="color" data="#00ff00" style="background:lime"></div>
-
-<div class="color" data="#00aaff" style="background:#00aaff"></div>
-
-<div class="color" data="#ffff00" style="background:yellow"></div>
-
-<div class="color" data="#ffffff" style="background:white"></div>
-
-<button id="clearBtn">
-Clear
-</button>
-
-</div>
 <script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const video = document.getElementById('video');
 
-const video = document.getElementById("video");
-const canvas = document.getElementById("draw");
-const ctx = canvas.getContext("2d");
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  resize();
+  window.addEventListener('resize', resize);
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  let lastX = null, lastY = null;
+  let isIndexUp = false;
 
-let lastX = 0;
-let lastY = 0;
-let drawing = false;
-let color = "#ff0000";
+  const hands = new Hands({
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
+  });
 
-document.querySelectorAll(".color").forEach(btn=>{
-    btn.onclick=()=>{
-        color=btn.dataset.color;
-    };
-});
+  hands.setOptions({
+    maxNumHands: 1,
+    modelComplexity: 1,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.5
+  });
 
-document.getElementById("clearBtn").onclick=()=>{
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-};
-
-const hands = new Hands({
-    locateFile: file=>{
-        return "https://cdn.jsdelivr.net/npm/@mediapipe/hands/"+file;
-    }
-});
-
-hands.setOptions({
-    maxNumHands:1,
-    modelComplexity:1,
-    minDetectionConfidence:0.7,
-    minTrackingConfidence:0.6
-});
-
-hands.onResults(results=>{
-
-    if(results.multiHandLandmarks.length){
-
-        const hand = results.multiHandLandmarks[0];
-
-        const finger = hand[8];
-
-        const thumb = hand[4];
-
-        const x=(1-finger.x)*canvas.width;
-        const y=finger.y*canvas.height;
-
-        const dx=finger.x-thumb.x;
-        const dy=finger.y-thumb.y;
-
-        const distance=Math.sqrt(dx*dx+dy*dy);
-
-        if(distance<0.05){
-
-            if(!drawing){
-                drawing=true;
-                lastX=x;
-                lastY=y;
-            }
-
-            ctx.beginPath();
-            ctx.moveTo(lastX,lastY);
-            ctx.lineTo(x,y);
-            ctx.strokeStyle=color;
-            ctx.lineWidth=5;
-            ctx.lineCap="round";
-            ctx.stroke();
-
-            lastX=x;
-            lastY=y;
-
-        }else{
-            drawing=false;
-        }
-
-    }else{
-        drawing=false;
+  hands.onResults((results) => {
+    if (!results.multiHandLandmarks || results.multiHandLandmarks.length === 0) {
+      lastX = null; lastY = null;
+      return;
     }
 
-});
+    const lm = results.multiHandLandmarks[0];
+    const x = (1 - lm[8].x) * canvas.width;
+    const y = lm[8].y * canvas.height;
 
-const camera = new Camera(video,{
-    onFrame:async()=>{
-        await hands.send({image:video});
+    // Index finger tip (8) above thumb tip (4) means pointing up
+    const indexY = lm[8].y;
+    const thumbY = lm[4].y;
+    const pointing = indexY < thumbY;
+
+    if (pointing) {
+      if (lastX !== null) {
+        ctx.strokeStyle = 'lime';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+      lastX = x; lastY = y;
+    } else {
+      lastX = null; lastY = null;
+    }
+  });
+
+  const camera = new Camera(video, {
+    onFrame: async () => {
+      await hands.send({ image: video });
     },
-    width:1280,
-    height:720
-});
+    width: 1280,
+    height: 720
+  });
 
-camera.start();
-
-window.onresize=()=>{
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-};
-
+  camera.start();
 </script>
-
-</body>
-</html>
